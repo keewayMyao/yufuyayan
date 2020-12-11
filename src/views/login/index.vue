@@ -44,7 +44,7 @@ export default {
   data() {
     //表单验证用户名
     const validateUserName = (rule, value, callback) => {
-      if (value == '') {
+      if (!(/^[0-9A-Za-z]{6,24}$/).test(value)) {
         callback(new Error('请输入用户名'))
       } else {
         callback()
@@ -105,8 +105,6 @@ export default {
 
     //登录
     handleLogin() {
-      // this.$router.push('/')
-
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
@@ -117,7 +115,7 @@ export default {
             this.loading = false
           })
         } else {
-          console.log('参数验证不合法！')
+          // console.log('参数验证不合法！')
           return false
         }
       })
