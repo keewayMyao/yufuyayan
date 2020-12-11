@@ -1,19 +1,32 @@
 <template>
+  <div>
   <el-row :gutter="40" class="panel-group">
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
+      <div class="card-panel" @click="">
         <div class="card-panel-icon-wrapper icon-people">
           <svg-icon icon-class="peoples" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">人数</div>
-          <span style="font-size: large">{{sonList.length + grandSonList.length}}</span>
+          <div class="card-panel-text">已邀人数</div>
+          <span style="font-size: large">{{sonNum}}</span>
         </div>
       </div>
     </el-col>
 
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" >
+      <div class="card-panel" @click="dialogTableVisible = true">
+        <div class="card-panel-icon-wrapper icon-tree">
+          <svg-icon icon-class="tree" class-name="card-panel-icon" />
+        </div>
+        <div class="card-panel-description">
+          <div class="card-panel-text">已邀用户</div>
+          <span style="font-size: larger">详情</span>
+        </div>
+      </div>
+    </el-col>
+
+    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+      <div class="card-panel" @click="">
         <div class="card-panel-icon-wrapper icon-money">
           <svg-icon icon-class="money" class-name="card-panel-icon" />
         </div>
@@ -23,7 +36,33 @@
         </div>
       </div>
     </el-col>
+
+<!--      roleId等于0和等于99，管理员和普通用户不显示邀请码-->
+    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col" v-if="$store.state.user.roleId !== 99">
+      <div class="card-panel" @click="">
+        <div class="card-panel-icon-wrapper icon-star">
+          <svg-icon icon-class="star" class-name="card-panel-icon" />
+        </div>
+        <div class="card-panel-description">
+          <div class="card-panel-text">邀请码</div>
+          <span style="font-size: large">{{invitationCode}}</span>
+        </div>
+      </div>
+    </el-col>
+
+
   </el-row>
+
+    <el-dialog title="收货地址" :visible.sync="dialogTableVisible">
+      <el-table :data="sonList">
+
+        <el-table-column property="nickName" label="昵称" ></el-table-column>
+        <el-table-column property="createTime" label="创建日期" ></el-table-column>
+        <el-table-column property="userRole" label="身份"></el-table-column>
+      </el-table>
+    </el-dialog>
+
+  </div>
 </template>
 
 <script>
@@ -34,13 +73,15 @@ import { queryUserListById } from '@/api/user'
 
 export default {
   name: 'Dashboard',
+  // invitationCode: $store.state.user.invitationCode,
   data(){
     return{
       income: '',
-      sonList:[],
-      grandSonList:[],
-      foundSonList:[],
-      sonNum:0,
+      sonNum: '',
+      sonList: null,
+      dialogTableVisible: false,
+      dialogFormVisible: false,
+      invitationCode: ''  //邀请码
     }
   },
   computed: {
@@ -48,27 +89,28 @@ export default {
       'name'
     ]),
   },
-  mounted() {
-     this.putongFetchData();
-     this.foundFetchData();
-     this.isFound();
+  created() {
+    //普通用户隐藏邀请码
+    this.hide()
+    this.fetchData()
   },
   methods: {
-    putongFetchData(){
-      queryUserListById("son", this.$store.state.user.userId).then(res => res.data = this.sonList)
-      queryUserListById("grandson", this.$store.state.user.userId).then(res => res.data = this.grandSonList)
+    fetchData() {
+      queryUserListById("son", this.$store.state.user.userId).then(res => {
+        // console.log(res)
+        this.sonNum = res.data.length
+        this.sonList = res.data
+      })
     },
-    foundFetchData(){
-      queryUserListById("found", this.$store.state.user.userId).then(res=>res.data = this.foundSonList)
-    },
-    isFound(){
-      if (this.$store.state.user.roleId === 3){
-        this.sonNum = this.foundSonList.length;
 
-      }else {
-        this.sonNum = this.sonList.length + this.grandSonList.length;
-        console.log(this.grandSonList)
-        console.log(this.sonList)
+    //普通用户隐藏邀请码
+    hide() {
+      if(this.$store.state.user.roleId === 0) {
+        // console.log(this.$store.state.user.roleId)
+        this.invitationCode = '******'
+      }
+      else{
+        this.invitationCode = this.$store.state.user.invitationCode
       }
     }
   }
@@ -103,7 +145,7 @@ export default {
         background: #40c9c6;
       }
 
-      .icon-message {
+      .icon-tree {
         background: #36a3f7;
       }
 
@@ -111,7 +153,7 @@ export default {
         background: #f4516c;
       }
 
-      .icon-shopping {
+      .icon-star {
         background: #34bfa3
       }
     }
@@ -120,7 +162,7 @@ export default {
       color: #40c9c6;
     }
 
-    .icon-message {
+    .icon-tree {
       color: #36a3f7;
     }
 
@@ -128,7 +170,7 @@ export default {
       color: #f4516c;
     }
 
-    .icon-shopping {
+    .icon-star {
       color: #34bfa3
     }
 

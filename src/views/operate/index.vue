@@ -5,8 +5,10 @@
       v-loading="listLoading"
       border
       fit
-      highlight-current-row>
-      <el-table-column align="center" label="序号" width="95">
+      highlight-current-row
+      height="40em"
+    >
+      <el-table-column align="center" label="序号" width="95" >
         <template slot-scope="scope">
           {{ scope.$index + 1}}
         </template>
@@ -24,6 +26,7 @@
         </template>
       </el-table-column>
     </el-table>
+
     <div class="pageNum">
     <el-button-group >
       <el-button  icon="el-icon-arrow-left" @click="previousPage()">上一页</el-button>
@@ -47,7 +50,7 @@ export default {
     return {
       list: null,
       listLoading: false,
-      page: 0
+      page: 0 ,
     }
   },
   created() {
@@ -68,7 +71,8 @@ export default {
     },
     //上一页
     previousPage(){
-      if (this.page === 1){
+      if (this.page === 0){
+        //禁用按钮
         this.disabled = true
       }else {
         this.page--
@@ -77,8 +81,13 @@ export default {
     },
     //下一页
     nextPage(){
-      this.page++
-      this.fetchData()
+      // console.log(this.list)
+      if(this.list.length !== 10){
+        this.disabled = true
+      }else {
+        this.page++
+        this.fetchData()
+      }
     },
 
     //把后台传入时间格式化

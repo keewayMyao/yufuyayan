@@ -8,7 +8,11 @@ export function login(userName, userPas) {
     data: {
       userName,
       userPas
-    }
+    },
+    // headers: {
+    //   'Authorization': 'Bearer ' + token,
+    //   "Cookie" : 'sessionId=' + sessionId + '; recId=' + recId,
+    // }
   })
 }
 
