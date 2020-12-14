@@ -63,15 +63,13 @@ export default {
     this.fetchData()
   },
   methods: {
-    //获取身份
+    //获取全部用户信息
     fetchData() {
       this.listLoading = true
       getUser().then(response => {
         this.list = response.data
-        console.log(response)
+        // console.log(response)
         this.listLoading = false
-      }).catch(err => {
-        console.log(err)
       })
     }
   }

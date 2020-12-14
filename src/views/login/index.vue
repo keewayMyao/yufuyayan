@@ -42,9 +42,9 @@
 export default {
   name: 'Login',
   data() {
-    //表单验证用户名
+    //表单验证用户名  只能输入 数字和英文
     const validateUserName = (rule, value, callback) => {
-      if (!(/^[0-9A-Za-z]{6,24}$/).test(value)) {
+      if (!(/^[0-9A-Za-z]{5,24}$/).test(value)) {
         callback(new Error('请输入用户名'))
       } else {
         callback()

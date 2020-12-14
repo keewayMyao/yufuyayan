@@ -6,7 +6,7 @@ import { getToken } from '@/utils/auth'
 // create an axios instance
 // 创建axios实例
 const service = axios.create({
-  baseURL: "http://192.168.0.129:8080", // url = base url + request url
+  baseURL: "http://192.168.0.129:2323", // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 15000 // request timeout
 })
@@ -27,7 +27,7 @@ service.interceptors.request.use(
   error => {
     // do something with request error
     // console.log("123")
-    console.log(error) // for debug
+    // console.log(error) // for debug
     return Promise.reject(error)
   }
 )
@@ -75,7 +75,7 @@ service.interceptors.response.use(
     }
   },
   error => {
-    console.log('err' + error) // for debug
+    // console.log('err' + error) // for debug
     Message({
       message: error.message,
       type: 'error',

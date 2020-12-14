@@ -53,7 +53,7 @@
 
   </el-row>
 
-    <el-dialog title="收货地址" :visible.sync="dialogTableVisible">
+    <el-dialog title="用户列表" :visible.sync="dialogTableVisible">
       <el-table :data="sonList">
 
         <el-table-column property="nickName" label="昵称" ></el-table-column>
