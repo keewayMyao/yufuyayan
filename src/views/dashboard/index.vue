@@ -1,8 +1,10 @@
 <template>
   <div>
   <el-row :gutter="40" class="panel-group">
+
+    <!--    ***********************已邀用户人数*************************   -->
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="">
+      <div class="card-panel" @click="dialogTableNum = true">
         <div class="card-panel-icon-wrapper icon-people">
           <svg-icon icon-class="peoples" class-name="card-panel-icon" />
         </div>
@@ -13,6 +15,7 @@
       </div>
     </el-col>
 
+<!--    ***********************已邀用户*************************   -->
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="dialogTableVisible = true">
         <div class="card-panel-icon-wrapper icon-tree">
@@ -25,8 +28,9 @@
       </div>
     </el-col>
 
+    <!--    ***********************佣金*************************   -->
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="">
+      <div class="card-panel" @click="dialogTableIncome = true">
         <div class="card-panel-icon-wrapper icon-money">
           <svg-icon icon-class="money" class-name="card-panel-icon" />
         </div>
@@ -38,8 +42,9 @@
     </el-col>
 
 <!--      roleId等于0和等于99，管理员和普通用户不显示邀请码-->
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col" v-if="$store.state.user.roleId !== 99">
-      <div class="card-panel" @click="">
+    <!--    ***********************邀请码*************************   -->
+    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col" >
+      <div class="card-panel" @click="dialogTableInvitationCode = true">
         <div class="card-panel-icon-wrapper icon-star">
           <svg-icon icon-class="star" class-name="card-panel-icon" />
         </div>
@@ -49,18 +54,34 @@
         </div>
       </div>
     </el-col>
-
-
   </el-row>
 
+<!--    *******************************************************************************-->
+<!--   点击已邀人数弹框    -->
+    <el-dialog title="佣金" :visible.sync="dialogTableNum">
+      <h2>已邀人数：<span>{{this.sonNum}}人</span></h2>
+    </el-dialog>
+
+
+<!--    点击已邀用户弹框-->
     <el-dialog title="用户列表" :visible.sync="dialogTableVisible">
       <el-table :data="sonList">
-
         <el-table-column property="nickName" label="昵称" ></el-table-column>
         <el-table-column property="createTime" label="创建日期" ></el-table-column>
         <el-table-column property="userRole" label="身份"></el-table-column>
       </el-table>
     </el-dialog>
+
+    <!--    点击佣金弹框-->
+    <el-dialog title="佣金" :visible.sync="dialogTableIncome">
+      <h2>佣金：<span>{{$store.state.user.income}}￥</span></h2>
+    </el-dialog>
+
+    <el-dialog title="邀请链接" :visible.sync="dialogTableInvitationCode">
+      <span>http://192.168.0.149:9528/#/invite?code={{ invitationCode }}&income={{ $store.state.user.income }}</span>
+    </el-dialog>
+
+
 
   </div>
 </template>
@@ -68,8 +89,6 @@
 <script>
 import { mapGetters } from 'vuex'
 import { queryUserListById } from '@/api/user'
-
-
 
 export default {
   name: 'Dashboard',
@@ -79,8 +98,11 @@ export default {
       income: '',
       sonNum: '',
       sonList: null,
-      dialogTableVisible: false,
-      dialogFormVisible: false,
+      dialogTableNum: false, //已邀人数是否弹框
+      dialogTableVisible: false, //已邀用户列表是否弹框
+      dialogTableIncome: false, //佣金是否弹框
+      dialogTableInvitationCode: false, //邀请码是否弹框
+      // dialogFormVisible: false,
       invitationCode: ''  //邀请码
     }
   },
@@ -105,14 +127,20 @@ export default {
 
     //普通用户隐藏邀请码
     hide() {
-      if(this.$store.state.user.roleId === 0) {
+      if(this.$store.state.user.roleId === 0 || this.$store.state.user.roleId === 99) {
         // console.log(this.$store.state.user.roleId)
         this.invitationCode = '******'
       }
       else{
         this.invitationCode = this.$store.state.user.invitationCode
       }
-    }
+    },
+
+    //点击邀请码跳转宣传页面
+    // jumpInvite(invitationCode,income) {
+    //   this.$router.push(`/invite?code=${invitationCode}&income=${income}`)
+    //   // alert(`http://localhost:9528/invite?code=${invitationCode}&income=${income}`)
+    // }
   }
 }
 </script>

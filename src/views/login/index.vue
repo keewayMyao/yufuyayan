@@ -5,7 +5,7 @@
     >
 
       <div class="title-container">
-        <h3 class="title">分销中心</h3>
+        <h3 class="title">玉肤颜</h3>
       </div>
 
       <el-form-item prop="userName">

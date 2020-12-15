@@ -110,13 +110,13 @@
       //处理
       edit(index) {
         this.isIndex = index
-        console.log(this.isIndex,'处理')
+        // console.log(this.isIndex,'处理')
         this.dialogVisible =  true
       },
 
       //确定 传入index
       determine(index) {
-        console.log(index,'确认传入')
+        // console.log(index,'确认传入')
         this.$confirm('此操作将修改身份, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',

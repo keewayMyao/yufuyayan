@@ -9,10 +9,6 @@ export function login(userName, userPas) {
       userName,
       userPas
     },
-    // headers: {
-    //   'Authorization': 'Bearer ' + token,
-    //   "Cookie" : 'sessionId=' + sessionId + '; recId=' + recId,
-    // }
   })
 }
 

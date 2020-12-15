@@ -5,7 +5,8 @@
       v-loading="listLoading"
       border
       fit
-      highlight-current-row>
+      highlight-current-row
+    >
       <el-table-column align="center" label="序号" width="95">
         <template slot-scope="scope">
           {{ scope.$index + 1 }}
@@ -14,13 +15,13 @@
 
       <el-table-column label="昵称">
         <template slot-scope="scope">
-          {{ scope.row.nickName}}
+          {{ scope.row.nickName }}
         </template>
       </el-table-column>
 
       <el-table-column label="用户名">
         <template slot-scope="scope">
-          {{ scope.row.userName}}
+          {{ scope.row.userName }}
         </template>
       </el-table-column>
 
@@ -30,33 +31,63 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="创建日期" align="center">
-        <template slot-scope="scope">
-          {{ scope.row.createTime }}
-        </template>
-      </el-table-column>
-
-      <el-table-column label="佣金" align="center">
+      <el-table-column label="总佣金" align="center">
         <template slot-scope="scope">
           {{ scope.row.income }}
         </template>
       </el-table-column>
 
+      <el-table-column label="上次结算总佣金" align="center">
+        <template slot-scope="scope">
+          {{ scope.row.lastIncome }}
+        </template>
+      </el-table-column>
+
+      <el-table-column label="上次结算日期" align="center">
+        <template slot-scope="scope">
+          {{ scope.row.settlementTime }}
+        </template>
+      </el-table-column>
+
+      <el-table-column label="本次可结算佣金" align="center">
+        <template slot-scope="scope">
+          {{ scope.row.income - scope.row.lastIncome }}
+        </template>
+      </el-table-column>
+
+      <el-table-column label="佣金" align="center">
+        <template slot-scope="scope">
+          <el-button type="primary" @click="settle(scope.$index)">结算</el-button>
+        </template>
+      </el-table-column>
+
     </el-table>
+
+    <el-dialog title="结算" :visible.sync="dialogTableSettle" width="30%" >
+      <span>是否确定结算本次佣金</span>
+      <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogTableSettle = false">取 消</el-button>
+          <el-button type="primary" @click="determine(isIndex)">确 定</el-button>
+        </span>
+    </el-dialog>
+
+
   </div>
 
 </template>
 
 <script>
 import { getUser } from '@/api/user'
-
+import { settlement } from '@/api/settlement'
 
 export default {
   filters: {},
   data() {
     return {
+      isIndex: '',
       list: null,
-      listLoading: false
+      listLoading: false,
+      dialogTableSettle: false
     }
   },
   created() {
@@ -68,9 +99,30 @@ export default {
       this.listLoading = true
       getUser().then(response => {
         this.list = response.data
-        // console.log(response)
+        console.log(response)
         this.listLoading = false
       })
+    },
+    //点击结算传入index
+    settle(index) {
+      //弹框提示
+      this.dialogTableSettle = true
+      this.isIndex = index
+      // console.log(index)
+      // console.log(this.list[index].userId)
+    },
+    determine(index) {
+      console.log(index)
+      settlement(this.list[index].userId).then(res => {
+        // console.log(res)
+        //取消弹框
+        this.dialogTableSettle = false
+      }).catch(err => {
+        // console.log(err)
+        //取消弹框
+        this.dialogTableSettle = false
+      })
+
     }
   }
 }

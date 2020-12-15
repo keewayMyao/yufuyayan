@@ -19,6 +19,11 @@ export const constantRoutes = [
     hidden: true
   },
   {
+    path: '/invite',
+    component: () => import('@/views/invite/index'),
+    hidden: true
+  },
+  {
     path: '/404',
     component: () => import('@/views/404'),
     hidden: true
@@ -34,6 +39,7 @@ export const constantRoutes = [
       meta: { title: '首页', icon: 'dashboard' }
     }]
   },
+
 
 ]
 

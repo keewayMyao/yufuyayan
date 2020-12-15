@@ -10,7 +10,7 @@ NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
 
 //白名单不需要登录都可以跳转
-const whiteList = ['/login','/register'] // no redirect whitelist
+const whiteList = ['/login','/register','/invite'] // no redirect whitelist
 
 router.beforeEach(async(to, from, next) => {
   // start progress bar
