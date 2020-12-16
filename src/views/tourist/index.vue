@@ -37,9 +37,12 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="操作" align="center">
+      <el-table-column label="操作" align="center" width="150px">
         <template slot-scope="scope">
-          <el-button type="primary" @click="edit(scope.$index)">处理</el-button>
+          <el-button size="mini" type="primary" @click="edit(scope.$index)">处理</el-button>
+          <el-button size="mini" type="danger" @click="delUser(scope.$index)">删除</el-button>
+
+
           <el-dialog title="处理" :visible.sync="dialogVisible" width="25%" >
             <el-form :model="form">
               <el-form-item label="操作身份:" :label-width="formLabelWidth">
@@ -64,6 +67,7 @@
 <script>
   import { getList } from '@/api/table'
   import { getAssignedRole } from '@/api/assignedRole'
+  import { delUserById } from '@/api/delUser'
 
   export default {
     filters: {},
@@ -129,8 +133,9 @@
                 type: 'success',
                 message: '修改成功!'
             })
-          }
-          );
+            //刷新页面
+            location.reload();
+          });
           this.dialogVisible =  false;
         }).catch(() => {
           this.$message({
@@ -145,6 +150,19 @@
       cancel() {
         // this.form.region = this.list[this.index].identity;
         this.dialogVisible =  false;
+      },
+
+      //删除
+      delUser(index) {
+        console.log(index)
+        console.log(this.list[index].userId)
+        delUserById(this.list[index].userId).then(res => {
+          console.log(res)
+          //刷新页面
+          location.reload();
+        }).catch(err => {
+          console.log(err)
+        })
       }
     }
   }

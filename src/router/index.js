@@ -19,10 +19,21 @@ export const constantRoutes = [
     hidden: true
   },
   {
+    path: '/userList',
+    component: () => import('@/views/userList/index'),
+    hidden: true
+  },
+  {
     path: '/invite',
     component: () => import('@/views/invite/index'),
     hidden: true
   },
+  {
+    path: '/QRCode',
+    component: () => import('@/views/QRCode/index'),
+    hidden: true
+  },
+
   {
     path: '/404',
     component: () => import('@/views/404'),

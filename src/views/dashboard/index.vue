@@ -17,7 +17,7 @@
 
 <!--    ***********************已邀用户*************************   -->
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="dialogTableVisible = true">
+      <div class="card-panel" @click="getUserList">
         <div class="card-panel-icon-wrapper icon-tree">
           <svg-icon icon-class="tree" class-name="card-panel-icon" />
         </div>
@@ -36,7 +36,8 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">佣金</div>
-          <span style="font-size: large">{{$store.state.user.income}}</span>
+<!--          <span style="font-size: large">{{$store.state.user.income}}</span>-->
+          <span style="font-size: large">******</span>
         </div>
       </div>
     </el-col>
@@ -44,7 +45,7 @@
 <!--      roleId等于0和等于99，管理员和普通用户不显示邀请码-->
     <!--    ***********************邀请码*************************   -->
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col" >
-      <div class="card-panel" @click="dialogTableInvitationCode = true">
+      <div class="card-panel" @click="jumpQRCode">
         <div class="card-panel-icon-wrapper icon-star">
           <svg-icon icon-class="star" class-name="card-panel-icon" />
         </div>
@@ -74,14 +75,18 @@
 
     <!--    点击佣金弹框-->
     <el-dialog title="佣金" :visible.sync="dialogTableIncome">
-      <h2>佣金：<span>{{$store.state.user.income}}￥</span></h2>
+<!--      <h2>佣金：<span>{{$store.state.user.income}}￥</span></h2>-->
+      <h2>佣金：<span>******￥</span></h2>
     </el-dialog>
 
-    <el-dialog title="邀请链接" :visible.sync="dialogTableInvitationCode">
-      <span>http://192.168.0.149:9528/#/invite?code={{ invitationCode }}&income={{ $store.state.user.income }}</span>
-    </el-dialog>
+<!--    <el-dialog title="邀请链接" :visible.sync="dialogTableInvitationCode">-->
+<!--      <div style="width: 200px; height: 200px">-->
+<!--&lt;!&ndash;      <span>http://192.168.0.149:9528/#/invite?code={{ invitationCode }}&income={{ $store.state.user.income }}</span>&ndash;&gt;-->
+<!--          <div class="qrcode" ref="qrCodeUrl"></div>-->
+<!--      </div>-->
+<!--    </el-dialog>-->
 
-
+<!--    <div class="qrcode" ref="qrCodeUrl"></div>-->
 
   </div>
 </template>
@@ -89,6 +94,8 @@
 <script>
 import { mapGetters } from 'vuex'
 import { queryUserListById } from '@/api/user'
+// import qrcode from '@/qrcode'
+import QRCode from 'qrcodejs2'
 
 export default {
   name: 'Dashboard',
@@ -115,7 +122,16 @@ export default {
     //普通用户隐藏邀请码
     this.hide()
     this.fetchData()
+    // this.creatQrCode()
   },
+  // mounted() {
+  //   var qrcode = new QRCode(this.$refs.qrCodeUrl, {
+  //     text: `http://192.168.0.149:9528/#/invite?code=${this.invitationCode}&income=${this.income}`,
+  //     width: 70,
+  //     height: 70,
+  //   })
+  //   console.log(qrcode)
+  // },
   methods: {
     fetchData() {
       queryUserListById("son", this.$store.state.user.userId).then(res => {
@@ -127,7 +143,7 @@ export default {
 
     //普通用户隐藏邀请码
     hide() {
-      if(this.$store.state.user.roleId === 0 || this.$store.state.user.roleId === 99) {
+      if(this.$store.state.user.roleId === 0) {
         // console.log(this.$store.state.user.roleId)
         this.invitationCode = '******'
       }
@@ -135,6 +151,21 @@ export default {
         this.invitationCode = this.$store.state.user.invitationCode
       }
     },
+
+    getUserList() {
+      this.$router.push('/userList')
+    },
+    jumpQRCode() {
+      this.$router.push('/QRCode')
+    }
+    // creatQrCode() {
+    //   var qrcode = new QRCode(this.$refs.qrCodeUrl, {
+    //     text: 'www.qtshe.com',
+    //     width: 70,
+    //     height: 70,
+    //   })
+    //   console.log(qrcode)
+    // }
 
     //点击邀请码跳转宣传页面
     // jumpInvite(invitationCode,income) {

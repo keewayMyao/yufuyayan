@@ -112,11 +112,12 @@ export default {
       // console.log(this.list[index].userId)
     },
     determine(index) {
-      console.log(index)
+      // console.log(index)
       settlement(this.list[index].userId).then(res => {
         // console.log(res)
         //取消弹框
         this.dialogTableSettle = false
+        location.reload();
       }).catch(err => {
         // console.log(err)
         //取消弹框
