@@ -1,15 +1,17 @@
 <template>
+  <!--  ****************************全部用户********************************-->
   <div class="app-container">
     <el-table
-      :data="list"
+      :data="list.slice((currentPage-1)*pageSize,currentPage*pageSize)"
       v-loading="listLoading"
       border
       fit
       highlight-current-row
+      height="36em"
     >
       <el-table-column align="center" label="序号" width="95">
         <template slot-scope="scope">
-          {{ scope.$index + 1 }}
+          {{ (scope.$index + (currentPage-1) * pageSize)+1 }}
         </template>
       </el-table-column>
 
@@ -62,8 +64,8 @@
       </el-table-column>
 
     </el-table>
-
-    <el-dialog title="结算" :visible.sync="dialogTableSettle" width="30%" >
+<!--***************************************结算弹框**********************************************-->
+    <el-dialog title="结算" :visible.sync="dialogTableSettle" width="70%" >
       <span>是否确定结算本次佣金</span>
       <span slot="footer" class="dialog-footer">
           <el-button @click="dialogTableSettle = false">取 消</el-button>
@@ -71,6 +73,14 @@
         </span>
     </el-dialog>
 
+<!--*****************************分页***********************************-->
+    <el-pagination class="fy"
+                   layout="prev, pager, next"
+                   @current-change="current_change"
+                   :total="total"
+                   background
+    >
+    </el-pagination>
 
   </div>
 
@@ -85,13 +95,17 @@ export default {
   data() {
     return {
       isIndex: '',
-      list: null,
+      list: [],
       listLoading: false,
-      dialogTableSettle: false
+      dialogTableSettle: false,
+      total: 1000,
+      pageSize: 10,
+      currentPage: 1
     }
   },
   created() {
     this.fetchData()
+
   },
   methods: {
     //获取全部用户信息
@@ -99,6 +113,7 @@ export default {
       this.listLoading = true
       getUser().then(response => {
         this.list = response.data
+        this.total = response.data.length;
         console.log(response)
         this.listLoading = false
       })
@@ -107,10 +122,10 @@ export default {
     settle(index) {
       //弹框提示
       this.dialogTableSettle = true
-      this.isIndex = index
-      // console.log(index)
-      // console.log(this.list[index].userId)
+      this.isIndex = index + (this.currentPage-1) * this.pageSize
+      console.log(this.isIndex,'结算')
     },
+    //确定结算佣金
     determine(index) {
       // console.log(index)
       settlement(this.list[index].userId).then(res => {
@@ -124,9 +139,21 @@ export default {
         this.dialogTableSettle = false
       })
 
+    },
+    //
+    current_change(currentPage) {
+      this.currentPage = currentPage;
     }
   }
 }
 
 </script>
+
+<style scoped>
+body .el-table th {
+
+  display: table-cell !important
+
+}
+</style>
 

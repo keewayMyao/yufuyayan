@@ -6,7 +6,8 @@ import { getToken } from '@/utils/auth'
 // create an axios instance
 // 创建axios实例
 const service = axios.create({
-  baseURL: "http://yufuyan.5gzvip.idcfengye.com", // url = base url + request url
+  //
+  baseURL: "http://192.168.0.129:2323", // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 15000 // request timeout
 })

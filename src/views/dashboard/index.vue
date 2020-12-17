@@ -1,4 +1,5 @@
 <template>
+  <!--  ****************************首页********************************-->
   <div>
   <el-row :gutter="40" class="panel-group">
 
@@ -29,23 +30,23 @@
     </el-col>
 
     <!--    ***********************佣金*************************   -->
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="dialogTableIncome = true">
-        <div class="card-panel-icon-wrapper icon-money">
-          <svg-icon icon-class="money" class-name="card-panel-icon" />
-        </div>
-        <div class="card-panel-description">
-          <div class="card-panel-text">佣金</div>
-<!--          <span style="font-size: large">{{$store.state.user.income}}</span>-->
-          <span style="font-size: large">******</span>
-        </div>
-      </div>
-    </el-col>
+<!--    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">-->
+<!--      <div class="card-panel" @click="dialogTableIncome = true">-->
+<!--        <div class="card-panel-icon-wrapper icon-money">-->
+<!--          <svg-icon icon-class="money" class-name="card-panel-icon" />-->
+<!--        </div>-->
+<!--        <div class="card-panel-description">-->
+<!--          <div class="card-panel-text">佣金</div>-->
+<!--&lt;!&ndash;          <span style="font-size: large">{{$store.state.user.income}}</span>&ndash;&gt;-->
+<!--          <span style="font-size: large">******</span>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </el-col>-->
 
 <!--      roleId等于0和等于99，管理员和普通用户不显示邀请码-->
     <!--    ***********************邀请码*************************   -->
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col" >
-      <div class="card-panel" @click="jumpQRCode">
+      <div class="card-panel" @click="dialogTableInvitationCode = true">
         <div class="card-panel-icon-wrapper icon-star">
           <svg-icon icon-class="star" class-name="card-panel-icon" />
         </div>
@@ -57,14 +58,13 @@
     </el-col>
   </el-row>
 
-<!--    *******************************************************************************-->
-<!--   点击已邀人数弹框    -->
-    <el-dialog title="佣金" :visible.sync="dialogTableNum">
+<!--   *********************************点击已邀人数弹框 **********************************   -->
+    <el-dialog title="" :visible.sync="dialogTableNum" width="100%">
       <h2>已邀人数：<span>{{this.sonNum}}人</span></h2>
     </el-dialog>
 
 
-<!--    点击已邀用户弹框-->
+    <!--   *********************************点击已邀用户弹框 **********************************   -->
     <el-dialog title="用户列表" :visible.sync="dialogTableVisible">
       <el-table :data="sonList">
         <el-table-column property="nickName" label="昵称" ></el-table-column>
@@ -73,20 +73,22 @@
       </el-table>
     </el-dialog>
 
-    <!--    点击佣金弹框-->
-    <el-dialog title="佣金" :visible.sync="dialogTableIncome">
+    <!--   *********************************点击佣金弹框 **********************************   -->
+<!--    <el-dialog title="佣金" :visible.sync="dialogTableIncome" width="100%">-->
 <!--      <h2>佣金：<span>{{$store.state.user.income}}￥</span></h2>-->
-      <h2>佣金：<span>******￥</span></h2>
-    </el-dialog>
-
-<!--    <el-dialog title="邀请链接" :visible.sync="dialogTableInvitationCode">-->
-<!--      <div style="width: 200px; height: 200px">-->
-<!--&lt;!&ndash;      <span>http://192.168.0.149:9528/#/invite?code={{ invitationCode }}&income={{ $store.state.user.income }}</span>&ndash;&gt;-->
-<!--          <div class="qrcode" ref="qrCodeUrl"></div>-->
-<!--      </div>-->
+<!--      <h2>佣金：<span>******￥</span></h2>-->
 <!--    </el-dialog>-->
 
-<!--    <div class="qrcode" ref="qrCodeUrl"></div>-->
+    <!--   *********************************点击邀请弹框 **********************************   -->
+    <el-dialog title="邀请" :visible.sync="dialogTableInvitationCode" width="100%" height="80%">
+      <div class="fx" >
+        <el-button type="success" round size="mini">立即分享</el-button>
+        <vue-qr class="qrcode" :text=downloadData.url :size="200" ></vue-qr>
+        <h2>邀请码：{{invitationCode}}</h2>
+
+      </div>
+    </el-dialog>
+
 
   </div>
 </template>
@@ -94,17 +96,22 @@
 <script>
 import { mapGetters } from 'vuex'
 import { queryUserListById } from '@/api/user'
-// import qrcode from '@/qrcode'
-import QRCode from 'qrcodejs2'
+import vueQr from 'vue-qr'
 
 export default {
   name: 'Dashboard',
   // invitationCode: $store.state.user.invitationCode,
   data(){
     return{
+      downloadData: {
+        url: `http://192.168.0.149:8080/#/invite?code=${this.invitationCode}&income=${this.income}`,
+        icon: '随便一张图片的地址也行'
+      },
+      qrcode: '',
       income: '',
       sonNum: '',
       sonList: null,
+      visible: false,
       dialogTableNum: false, //已邀人数是否弹框
       dialogTableVisible: false, //已邀用户列表是否弹框
       dialogTableIncome: false, //佣金是否弹框
@@ -113,6 +120,9 @@ export default {
       invitationCode: ''  //邀请码
     }
   },
+  components: {
+    vueQr
+  },
   computed: {
     ...mapGetters([
       'name'
@@ -120,18 +130,11 @@ export default {
   },
   created() {
     //普通用户隐藏邀请码
+
     this.hide()
     this.fetchData()
     // this.creatQrCode()
   },
-  // mounted() {
-  //   var qrcode = new QRCode(this.$refs.qrCodeUrl, {
-  //     text: `http://192.168.0.149:9528/#/invite?code=${this.invitationCode}&income=${this.income}`,
-  //     width: 70,
-  //     height: 70,
-  //   })
-  //   console.log(qrcode)
-  // },
   methods: {
     fetchData() {
       queryUserListById("son", this.$store.state.user.userId).then(res => {
@@ -151,32 +154,29 @@ export default {
         this.invitationCode = this.$store.state.user.invitationCode
       }
     },
-
     getUserList() {
       this.$router.push('/userList')
     },
     jumpQRCode() {
       this.$router.push('/QRCode')
-    }
-    // creatQrCode() {
-    //   var qrcode = new QRCode(this.$refs.qrCodeUrl, {
-    //     text: 'www.qtshe.com',
-    //     width: 70,
-    //     height: 70,
-    //   })
-    //   console.log(qrcode)
-    // }
-
-    //点击邀请码跳转宣传页面
-    // jumpInvite(invitationCode,income) {
-    //   this.$router.push(`/invite?code=${invitationCode}&income=${income}`)
-    //   // alert(`http://localhost:9528/invite?code=${invitationCode}&income=${income}`)
-    // }
+    },
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.fx {
+  display: flex;
+  flex-direction: column;
+}
+.fx h2 {
+  text-align: center;
+}
+.qrcode {
+  margin: 0 auto;
+}
+
+
 .panel-group {
   margin-top: 18px;
 

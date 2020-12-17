@@ -1,14 +1,17 @@
 <template>
+<!--  ****************************创始人********************************-->
   <div class="app-container">
     <el-table
-      :data="list"
+      :data="list.slice((currentPage-1)*pageSize,currentPage*pageSize)"
       v-loading="listLoading"
       border
       fit
-      highlight-current-row>
+      highlight-current-row
+      height="36em"
+    >
       <el-table-column align="center" label="序号" width="95">
         <template slot-scope="scope">
-          {{ scope.$index + 1 }}
+          {{ (scope.$index + (currentPage-1) * pageSize)+1 }}
         </template>
       </el-table-column>
 
@@ -43,6 +46,16 @@
       </el-table-column>
 
     </el-table>
+
+    <!--*****************************分页***********************************-->
+    <el-pagination class="fy"
+                   layout="prev, pager, next"
+                   @current-change="current_change"
+                   :total="total"
+                   background
+    >
+    </el-pagination>
+
   </div>
 
 <!--  <tab></tab>-->
@@ -56,8 +69,11 @@ import { getList } from '@/api/table'
     filters: {},
     data() {
       return {
-        list: null,
-        listLoading: false
+        list: [],
+        listLoading: false,
+        total: 1000,
+        pageSize: 10,
+        currentPage: 1
       }
     },
     created() {
@@ -69,11 +85,15 @@ import { getList } from '@/api/table'
         this.listLoading = true
         getList(3).then(response => {
           this.list = response.data
+          this.total = response.data.length;
           this.listLoading = false
         }).catch(err => {
           console.log(err)
         })
       },
+      current_change(currentPage) {
+        this.currentPage = currentPage;
+      }
     },
     // components: {
     //   tab

@@ -1,4 +1,5 @@
 <template>
+  <!--  ****************************log日志********************************-->
   <div class="app-container">
     <el-table
       :data="list"
@@ -6,11 +7,11 @@
       border
       fit
       highlight-current-row
-      height="40em"
+      height="36em"
     >
       <el-table-column align="center" label="序号" width="95" >
         <template slot-scope="scope">
-          {{ scope.$index + 1}}
+          {{ (scope.$index + page * pageSize)+1}}
         </template>
       </el-table-column>
 
@@ -22,7 +23,7 @@
 
       <el-table-column label="操作时间" width="155">
         <template slot-scope="scope">
-          {{ toTime(scope.row.log_time)}}
+          {{ scope.row.log_time}}
         </template>
       </el-table-column>
     </el-table>
@@ -48,9 +49,10 @@ import { getAssignedRoleLog } from '@/api/assignedRoleLog'
 export default {
   data() {
     return {
-      list: null,
+      list: [],
       listLoading: false,
       page: 0 ,
+      pageSize: 10
     }
   },
   created() {
@@ -60,7 +62,7 @@ export default {
     fetchData() {
       this.listLoading = true
       //获取log信息
-      getAssignedRoleLog(10, this.page).then(res => {
+      getAssignedRoleLog(this.pageSize, this.page).then(res => {
         // console.log('获取log成功')
         // console.log(res.data)
         this.list = res.data
@@ -89,34 +91,6 @@ export default {
         this.fetchData()
       }
     },
-
-    //把后台传入时间格式化
-    toTime(strTime) {
-      if (!strTime) {
-      return '';
-      }
-      let myDate = new Date(strTime + '+0800');
-      if (myDate == 'Invalid Date') {
-        strTime = strTime.replace(/T/g, ' '); //去掉T
-        strTime = strTime.replace(/-/g, '/');
-        strTime = strTime.replace(/\.\d+/, ' ');//去掉毫秒
-        myDate = new Date(strTime + '+0800');
-      }
-      let date = new Date(myDate);
-      let y = date.getFullYear();
-      let m = date.getMonth() + 1;
-      m = m < 10 ? ('0' + m) : m;
-      let d = date.getDate();
-      d = d < 10 ? ('0' + d) : d;
-      let h = date.getHours();
-      h = h < 10 ? ('0' + h) : h;
-      let minute = date.getMinutes();
-      let second = date.getSeconds();
-      minute = minute < 10 ? ('0' + minute) : minute;
-      second = second < 10 ? ('0' + second) : second;
-      return  y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
-    }
-
   }
 }
 </script>
