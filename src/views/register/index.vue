@@ -42,7 +42,7 @@
         <span class="svg-container">
           <svg-icon icon-class="user"/>
         </span>
-        <el-input ref="invitationCode" v-model="loginForm.invitationCode" placeholder="邀请码" name="invitationCode"
+        <el-input ref="invitationCode" v-model="loginForm.invitationCode"  placeholder="邀请码" name="invitationCode"
                   type="text"
                   tabindex="1" auto-complete="on"
         />
@@ -119,8 +119,15 @@ export default {
       },
       loading: false,
       passwordType: 'password',
-      redirect: undefined
+      redirect: undefined,
+      code: ''
     }
+  },
+  //从链接上拿到邀请码
+  mounted() {
+    var url = window.location.hash;
+    this.loginForm.invitationCode = url.substring(16,22);
+    // console.log(this.loginForm.invitationCode)
   },
   methods: {
     showPwd() {
@@ -250,7 +257,7 @@ $light_gray: #eee;
     position: relative;
     width: 520px;
     max-width: 100%;
-    padding: 160px 35px 0;
+    padding: 80px 35px 0;
     margin: 0 auto;
     overflow: hidden;
   }

@@ -104,7 +104,7 @@ export default {
   data(){
     return{
       downloadData: {
-        url: `http://192.168.0.149:8080/#/invite?code=${this.invitationCode}&income=${this.income}`,
+        url: `http://192.168.0.149:8080/#/invite?code=${this.$store.state.user.invitationCode}&income=${this.$store.state.user.income}`,
         icon: '随便一张图片的地址也行'
       },
       qrcode: '',
@@ -133,6 +133,8 @@ export default {
 
     this.hide()
     this.fetchData()
+    console.log(this.invitationCode)
+    console.log(this.income)
     // this.creatQrCode()
   },
   methods: {
