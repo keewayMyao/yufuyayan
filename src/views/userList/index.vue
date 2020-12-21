@@ -1,13 +1,13 @@
 <template>
   <div class="app-container">
     <h3 style="text-align: center">已邀请的用户列表</h3>
-    <el-button type="primary" @click="$router.push('/')">返回首页</el-button>
+    <el-button type="primary" @click="$router.push('/distribution/index')">返回首页</el-button>
     <el-table
       :data="sonList"
       border
       fit
       highlight-current-row>
-      <el-table-column align="center" label="序号" width="95">
+      <el-table-column align="center" label="序号" width="75">
         <template slot-scope="scope">
           {{ scope.$index + 1 }}
         </template>
@@ -61,11 +61,11 @@ import { queryUserListById } from '@/api/user'
         // console.log(this.$store.state.user.userId)
 
         queryUserListById("son", this.$store.state.user.userId).then(res => {
-          console.log(res)
+          // console.log(res)
           // this.sonNum = res.data.length
           this.sonList = res.data
         }).catch(err => {
-          console.log(err)
+          // console.log(err)
         })
       },
     },

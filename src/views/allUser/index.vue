@@ -9,7 +9,7 @@
       highlight-current-row
       height="36em"
     >
-      <el-table-column align="center" label="序号" width="95">
+      <el-table-column align="center" label="序号" width="75">
         <template slot-scope="scope">
           {{ (scope.$index + (currentPage-1) * pageSize)+1 }}
         </template>
@@ -114,7 +114,7 @@ export default {
       getUser().then(response => {
         this.list = response.data
         this.total = response.data.length;
-        console.log(response)
+        // console.log(response)
         this.listLoading = false
       })
     },
@@ -123,7 +123,7 @@ export default {
       //弹框提示
       this.dialogTableSettle = true
       this.isIndex = index + (this.currentPage-1) * this.pageSize
-      console.log(this.isIndex,'结算')
+      // console.log(this.isIndex,'结算')
     },
     //确定结算佣金
     determine(index) {

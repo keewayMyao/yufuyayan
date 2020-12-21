@@ -6,7 +6,7 @@ Vue.use(Router)
 /* Layout */
 import Layout from '@/layout'
 
-
+//普通路由
 export const constantRoutes = [
   {
     path: '/login',
@@ -29,11 +29,10 @@ export const constantRoutes = [
     hidden: true
   },
   {
-    path: '/QRCode',
-    component: () => import('@/views/QRCode/index'),
+    path: '/myHome',
+    component: () => import('@/views/myHome/index'),
     hidden: true
   },
-
   {
     path: '/404',
     component: () => import('@/views/404'),
@@ -43,17 +42,30 @@ export const constantRoutes = [
     path: '/',
     component: Layout,
     redirect: '/dashboard',
-    children: [{
-      path: 'dashboard',
-      name: 'Dashboard',
-      component: () => import('@/views/dashboard/index'),
-      meta: { title: '首页', icon: 'dashboard' }
-    }]
+    children: [
+      {
+        path: 'dashboard',
+        name: 'Dashboard',
+        component: () => import('@/views/dashboard/index'),
+        meta: { title: '首页', icon: 'dashboard' }
+      }
+    ]
   },
-
-
+  {
+    path: '/distribution',
+    component: Layout,
+    redirect: '/distribution',
+    children: [
+      {
+        path: 'index',
+        name: 'Distribution',
+        component: () => import('@/views/distribution/index'),
+        meta: { title: '分销中心', icon: 'tree' }
+      }
+    ]
+  }
 ]
-
+//超级管理员路由
 export const asyncRouter = [
   {
     path: '/administration',
@@ -112,9 +124,22 @@ export const asyncRouter = [
     ]
   },
   { path: '*', redirect: '/404', hidden: true }
-];
-
-
+]
+//用户路由
+export const userAsyncRouter = [
+  {
+    path: '/',
+    component: Layout,
+    redirect: '/dashboard',
+    children: [
+      {
+        path: 'dashboard',
+        name: 'Dashboard',
+        component: () => import('@/views/dashboard/index'),
+        meta: { title: '首页', icon: 'dashboard' }
+      }]
+  },
+]
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support

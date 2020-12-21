@@ -48,7 +48,7 @@ const actions = {
         accessedRoutes = asyncRouter || []
       }
       else {
-        //不添加权限路由
+        //添加用户权限路由
         accessedRoutes = []
         // accessedRoutes = filterAsyncRoutes(asyncRouter, roleId)
       }

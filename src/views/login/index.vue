@@ -109,7 +109,7 @@ export default {
         if (valid) {
           this.loading = true
           this.$store.dispatch('user/login', this.loginForm).then(() => {
-            this.$router.push( '/dashboard')//this.redirect ||
+            this.$router.push( '/')//this.redirect ||
             this.loading = false
           }).catch(() => {
             this.loading = false

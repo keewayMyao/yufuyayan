@@ -9,7 +9,7 @@
       highlight-current-row
       height="36em"
     >
-      <el-table-column align="center" label="序号" width="95" >
+      <el-table-column align="center" label="序号" width="75" >
         <template slot-scope="scope">
           {{ (scope.$index + page * pageSize)+1}}
         </template>

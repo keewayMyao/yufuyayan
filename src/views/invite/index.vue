@@ -4,9 +4,10 @@
       <el-carousel
         trigger="click"
         interval="4000"
-        height="60vh"
+        height="75vh"
         indicator-position="none"
-        type="card">
+
+      >
         <el-carousel-item v-for="item in imageBox" :key="item.id">
           <img :src="item.idView" class="image">
         </el-carousel-item>
@@ -20,49 +21,50 @@
           border-color: pink;
           color: #666"  @click="jumpRegister">注册</el-button>
       </div>
-      <div class="box">
+      <div class="box bpx1">
         <ul>
-          <li>小阿斌邀请了小阿斌111</li>
-          <li>小阿斌邀请了小阿斌222</li>
-          <li>小阿斌邀请了小阿斌333</li>
-          <li>小阿斌邀请了小阿斌444</li>
-          <li>小阿斌邀请了小阿斌555</li>
-          <li>小阿斌邀请了小阿斌666</li>
-          <li>小阿斌邀请了小阿斌777</li>
-          <li>小阿斌邀请了小阿斌888</li>
-          <li>小阿斌邀请了小阿斌999</li>
-          <li>小阿斌邀请了小阿斌101010</li>
-          <li>小阿斌邀请了小阿斌111</li>
+          <li>{{random()}}</li>
+          <li>{{random()}}</li>
+          <li>{{random()}}</li>
+          <li>{{random()}}</li>
+          <li>{{random()}}</li>
+          <li>{{random()}}</li>
+          <li>{{random()}}</li>
+          <li>{{random()}}</li>
+          <li>{{random()}}</li>
+          <li>{{random()}}</li>
+          <li>{{random()}}</li>
         </ul>
       </div>
-      <div class="box">
+      <div class="box box2">
         <ul>
-          <li>小阿斌邀请了小阿斌111</li>
-          <li>小阿斌邀请了小阿斌222</li>
-          <li>小阿斌邀请了小阿斌333</li>
-          <li>小阿斌邀请了小阿斌444</li>
-          <li>小阿斌邀请了小阿斌555</li>
-          <li>小阿斌邀请了小阿斌666</li>
-          <li>小阿斌邀请了小阿斌777</li>
-          <li>小阿斌邀请了小阿斌888</li>
-          <li>小阿斌邀请了小阿斌999</li>
-          <li>小阿斌邀请了小阿斌101010</li>
-          <li>小阿斌邀请了小阿斌111</li>
+          <li>{{random()}}</li>
+          <li>{{random()}}</li>
+          <li>{{random()}}</li>
+          <li>{{random()}}</li>
+          <li>{{random()}}</li>
+          <li>{{random()}}</li>
+          <li>{{random()}}</li>
+          <li>{{random()}}</li>
+          <li>{{random()}}</li>
+          <li>{{random()}}</li>
+          <li>{{random()}}</li>
         </ul>
       </div>
-      <div class="box">
+      <div class="box box3">
         <ul>
-          <li>小阿斌邀请了小阿斌111</li>
-          <li>小阿斌邀请了小阿斌222</li>
-          <li>小阿斌邀请了小阿斌333</li>
-          <li>小阿斌邀请了小阿斌444</li>
-          <li>小阿斌邀请了小阿斌555</li>
-          <li>小阿斌邀请了小阿斌666</li>
-          <li>小阿斌邀请了小阿斌777</li>
-          <li>小阿斌邀请了小阿斌888</li>
-          <li>小阿斌邀请了小阿斌999</li>
-          <li>小阿斌邀请了小阿斌101010</li>
-          <li>小阿斌邀请了小阿斌111</li>
+          <li>{{random()}}</li>
+          <li>{{random()}}</li>
+          <li>{{random()}}</li>
+          <li>{{random()}}</li>
+          <li>{{random()}}</li>
+          <li>{{random()}}</li>
+          <li>{{random()}}</li>
+          <li>{{random()}}</li>
+          <li>{{random()}}</li>
+          <li>{{random()}}</li>
+          <li>{{random()}}</li>
+
         </ul>
       </div>
     </div>
@@ -76,6 +78,7 @@ export default {
     return{
       code:"",
       income:"",
+      name: '',
       imageBox:[
         {id:0,idView:require('@/assets/imagebox/sp-1.jpg')},
         {id:1,idView:require('@/assets/imagebox/sp-2.jpg')},
@@ -89,13 +92,37 @@ export default {
   methods:{
     jumpRegister() {
       this.$router.push(`/register?code=${this.code}`)
+    },
+    random() {
+      var arr = ['赵', '钱', '孙', '李', '周', '吴', '郑', '王', '冯', '陈', '褚', '卫', '蒋', '沈', '韩', '杨', '朱', '秦', '尤', '许',
+      '何', '吕', '施', '张', '孔', '曹', '严', '华', '金', '魏', '陶', '姜', '戚', '谢', '邹', '喻', '柏', '水', '窦', '章',
+      '云', '苏', '潘', '葛', '奚', '范', '彭', '郎', '鲁', '韦', '昌', '马', '苗', '凤', '花', '方', '俞', '任', '袁', '柳',
+      '酆', '鲍', '史', '唐', '费', '廉', '岑', '薛', '雷', '贺', '倪', '汤', '滕', '殷', '罗', '毕', '郝', '邬', '安', '常',
+      '乐', '于', '时', '傅', '皮', '卞', '齐', '康', '伍', '余', '元', '卜', '顾', '孟', '平', '黄', '和', '穆', '萧', '尹',
+      '姚', '邵', '湛', '汪', '祁', '毛', '禹', '狄', '米', '贝', '明', '臧', '计', '伏', '成', '戴', '谈', '宋', '茅', '庞',
+      '熊', '纪', '舒', '屈', '项', '祝', '董', '梁', '杜', '阮', '蓝', '闵', '席', '季', '麻', '强', '贾', '路', '娄', '危' ];
+      var arr1 = [500, 5000, 7500, 8000, 8500, 12000, 19800]
+     return  arr[Math.floor((Math.random()*arr.length))]+'**获得佣金'+arr1[Math.floor((Math.random()*arr1.length))];
     }
+
   },
   mounted() {
    var url = window.location.hash;
    this.code = url.substring(14,20);
-    console.log(this.code)
-   this.income = url.substring(28);
+    // console.log(this.code)
+   // this.income = url.substring(28);
+//     var arr = ['赵', '钱', '孙', '李', '周', '吴', '郑', '王', '冯', '陈', '褚', '卫', '蒋', '沈', '韩', '杨', '朱', '秦', '尤', '许',
+//       '何', '吕', '施', '张', '孔', '曹', '严', '华', '金', '魏', '陶', '姜', '戚', '谢', '邹', '喻', '柏', '水', '窦', '章',
+//       '云', '苏', '潘', '葛', '奚', '范', '彭', '郎', '鲁', '韦', '昌', '马', '苗', '凤', '花', '方', '俞', '任', '袁', '柳',
+//       '酆', '鲍', '史', '唐', '费', '廉', '岑', '薛', '雷', '贺', '倪', '汤', '滕', '殷', '罗', '毕', '郝', '邬', '安', '常',
+//       '乐', '于', '时', '傅', '皮', '卞', '齐', '康', '伍', '余', '元', '卜', '顾', '孟', '平', '黄', '和', '穆', '萧', '尹',
+//       '姚', '邵', '湛', '汪', '祁', '毛', '禹', '狄', '米', '贝', '明', '臧', '计', '伏', '成', '戴', '谈', '宋', '茅', '庞',
+//       '熊', '纪', '舒', '屈', '项', '祝', '董', '梁', '杜', '阮', '蓝', '闵', '席', '季', '麻', '强', '贾', '路', '娄', '危' ];
+//      arr[Math.floor((Math.random()*arr.length))]+'**';
+
+
+// },2000)
+
   }
 }
 </script>
@@ -114,19 +141,30 @@ export default {
   .required {
     display: flex;
     justify-content: center;
-    margin: 4% 0;
+    margin: 1vh 0;
   }
 
   .box{
     position: relative;
     width: 90%;
-    height: 40px;
-    background-color: #fdfbfb;
-    line-height: 5px;
-    margin: 3% auto  ;
-    /*border: 1px solid pink;*/
-    border-radius: 18px;
+    height: 5vh;
+    /*background-color: #fdfbfb;*/
+    line-height: 0px;
+    margin: 0 auto  ;
+    border: 1px solid #333;
+    /*border-radius: 18px;*/
     overflow: hidden;
+  }
+  .bpx1 {
+    /*margin-top: 2vh;*/
+    border-radius: 18px 18px 0 0;
+    border-bottom: none;
+  }
+  .box2 {
+    border-bottom: none;
+  }
+  .box3 {
+    border-radius: 0 0 18px 18px;
   }
   .box ul{
     position: absolute;
@@ -134,7 +172,7 @@ export default {
     left: 0;
     width: 100%;
     height: 500%;
-    animation: broadcast 40s linear infinite;
+    animation: broadcast 50s linear infinite;
   }
   .box ul li{
     width: 100%;

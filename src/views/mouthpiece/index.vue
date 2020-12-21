@@ -8,7 +8,7 @@
       highlight-current-row
       height="36em"
     >
-      <el-table-column align="center" label="序号" width="95">
+      <el-table-column align="center" label="序号" width="75">
         <template slot-scope="scope">
           {{ (scope.$index + (currentPage-1) * pageSize)+1 }}
         </template>
