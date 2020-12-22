@@ -60,7 +60,7 @@ export const constantRoutes = [
         path: 'index',
         name: 'Distribution',
         component: () => import('@/views/distribution/index'),
-        meta: { title: '分销中心', icon: 'tree' }
+        meta: { title: '管理中心', icon: 'tree' }
       }
     ]
   }

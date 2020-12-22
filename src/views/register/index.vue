@@ -69,14 +69,14 @@ export default {
     }
     const validateUserName = (rule, value, callback) => {
       if (!(/^[0-9A-Za-z]{6,24}$/).test(value)) {
-        callback(new Error('用户名格式不正确'))
+        callback(new Error('用户名格式不正确(6-24位英文数字)'))
       } else {
         callback()
       }
     }
     const validateUserPas = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('请输入密码（不得小于6位数）'))
+      if (!(/^[0-9A-Za-z]{6,24}$/).test(value)) {
+        callback(new Error('请输入密码（6-24位）'))
       } else {
         callback()
       }

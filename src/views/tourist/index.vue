@@ -143,13 +143,13 @@
       edit(index) {
         this.isIndex = index + (this.currentPage-1) * this.pageSize
 
-        console.log(index + (this.currentPage-1) * this.pageSize,'处理')
+        // console.log(index + (this.currentPage-1) * this.pageSize,'处理')
         this.dialogVisible =  true
       },
       //删除弹框
       deleteUser(index) {
         this.isIndex = index + (this.currentPage-1) * this.pageSize
-        console.log(index + (this.currentPage-1) * this.pageSize,'删除')
+        // console.log(index + (this.currentPage-1) * this.pageSize,'删除')
         this.dialogTableDelUser =  true
       },
 
@@ -189,14 +189,14 @@
 
       //删除
       delUser(index) {
-        console.log(index)
-        console.log(this.list[index].userId)
+        // console.log(index)
+        // console.log(this.list[index].userId)
         delUserById(this.list[index].userId).then(res => {
-          console.log(res)
+          // console.log(res)
           //刷新页面
           location.reload();
         }).catch(err => {
-          console.log(err)
+          // console.log(err)
         })
       },
       current_change(currentPage) {

@@ -1,25 +1,16 @@
 <template>
   <div id="invite-bg" >
     <div class="block">
-      <el-carousel
-        trigger="click"
-        interval="4000"
-        height="75vh"
-        indicator-position="none"
-
-      >
-        <el-carousel-item v-for="item in imageBox" :key="item.id">
-          <img :src="item.idView" class="image">
-        </el-carousel-item>
-      </el-carousel>
+      <img style="width: 100%" src="@/assets/logo/logo.jpg" alt="">
       <div class="required">
         <el-button
           type="primary"
           round
           style="width: 100%;
-          background-color: pink;
-          border-color: pink;
-          color: #666"  @click="jumpRegister">注册</el-button>
+          background-color: #59d4c2;
+          border-color: #59d4c2;
+          color: #666;
+          margin-bottom: 5%"  @click="jumpRegister">注册</el-button>
       </div>
       <div class="box bpx1">
         <ul>
@@ -64,7 +55,6 @@
           <li>{{random()}}</li>
           <li>{{random()}}</li>
           <li>{{random()}}</li>
-
         </ul>
       </div>
     </div>
@@ -79,14 +69,6 @@ export default {
       code:"",
       income:"",
       name: '',
-      imageBox:[
-        {id:0,idView:require('@/assets/imagebox/sp-1.jpg')},
-        {id:1,idView:require('@/assets/imagebox/sp-2.jpg')},
-        {id:2,idView:require('@/assets/imagebox/sp-3.jpg')},
-        {id:2,idView:require('@/assets/imagebox/sp-4.jpg')},
-        {id:2,idView:require('@/assets/imagebox/sp-5.jpg')},
-        {id:2,idView:require('@/assets/imagebox/sp-6.jpg')}
-      ]
     }
   },
   methods:{
@@ -109,20 +91,6 @@ export default {
   mounted() {
    var url = window.location.hash;
    this.code = url.substring(14,20);
-    // console.log(this.code)
-   // this.income = url.substring(28);
-//     var arr = ['赵', '钱', '孙', '李', '周', '吴', '郑', '王', '冯', '陈', '褚', '卫', '蒋', '沈', '韩', '杨', '朱', '秦', '尤', '许',
-//       '何', '吕', '施', '张', '孔', '曹', '严', '华', '金', '魏', '陶', '姜', '戚', '谢', '邹', '喻', '柏', '水', '窦', '章',
-//       '云', '苏', '潘', '葛', '奚', '范', '彭', '郎', '鲁', '韦', '昌', '马', '苗', '凤', '花', '方', '俞', '任', '袁', '柳',
-//       '酆', '鲍', '史', '唐', '费', '廉', '岑', '薛', '雷', '贺', '倪', '汤', '滕', '殷', '罗', '毕', '郝', '邬', '安', '常',
-//       '乐', '于', '时', '傅', '皮', '卞', '齐', '康', '伍', '余', '元', '卜', '顾', '孟', '平', '黄', '和', '穆', '萧', '尹',
-//       '姚', '邵', '湛', '汪', '祁', '毛', '禹', '狄', '米', '贝', '明', '臧', '计', '伏', '成', '戴', '谈', '宋', '茅', '庞',
-//       '熊', '纪', '舒', '屈', '项', '祝', '董', '梁', '杜', '阮', '蓝', '闵', '席', '季', '麻', '强', '贾', '路', '娄', '危' ];
-//      arr[Math.floor((Math.random()*arr.length))]+'**';
-
-
-// },2000)
-
   }
 }
 </script>
@@ -132,11 +100,13 @@ export default {
     position: relative;
     width: 100vw;
     height: 100vh;
-    background-color: #3b9ea7;
+    /*background-color: #3b9ea7;*/
   }
   #invite-bg img {
+    margin: 10% 0;
+    border-radius: 50%;
     width: 100%;
-    height: 100%;
+    /*height: 100%;*/
   }
   .required {
     display: flex;
@@ -172,6 +142,7 @@ export default {
     left: 0;
     width: 100%;
     height: 500%;
+    /*background-color: pink;*/
     animation: broadcast 50s linear infinite;
   }
   .box ul li{
@@ -205,23 +176,8 @@ export default {
     100%{top: -1000%;}
   }
 
-  el-carousel__item h3 {
-    color: #475669;
-    font-size: 14px;
-    opacity: 0.75;
-    line-height: 150px;
-    margin: 0;
-  }
-
-  .el-carousel__item:nth-child(2n) {
-    background-color: #99a9bf;
-  }
-
-  .el-carousel__item:nth-child(2n+1) {
-    background-color: #d3dce6;
-  }
   .block {
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
   }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <!--  ****************************分销中心********************************-->
-  <div >
+  <div>
     <el-row :gutter="40" class="panel-group" id="row">
 
       <!--    ***********************已邀用户人数*************************   -->
@@ -9,11 +9,11 @@
         <div class="colTitle">已邀人数</div>
         <div class="card-panel" @click="dialogTableNum = true">
           <div class="card-panel-icon-wrapper icon-people">
-            <svg-icon icon-class="peoples" class-name="card-panel-icon" />
+            <svg-icon icon-class="peoples" class-name="card-panel-icon"/>
           </div>
           <div class="card-panel-description">
             <div class="card-panel-text">已邀人数</div>
-            <span style="font-size: large">{{sonNum}}</span>
+            <span style="font-size: large">{{ sonNum }}</span>
           </div>
         </div>
       </el-col>
@@ -23,7 +23,7 @@
         <div class="colTitle">已邀用户</div>
         <div class="card-panel" @click="getUserList">
           <div class="card-panel-icon-wrapper icon-tree">
-            <svg-icon icon-class="tree" class-name="card-panel-icon" />
+            <svg-icon icon-class="tree" class-name="card-panel-icon"/>
           </div>
           <div class="card-panel-description">
             <div class="card-panel-text">已邀用户</div>
@@ -49,15 +49,15 @@
 
       <!--      roleId等于0和等于99，管理员和普通用户不显示邀请码-->
       <!--    ***********************邀请码*************************   -->
-      <el-col  :xs="10" :sm="10" :lg="6" class="card-panel-col" >
-        <div class="colTitle" >邀请码</div>
+      <el-col :xs="10" :sm="10" :lg="6" class="card-panel-col">
+        <div class="colTitle">邀请码</div>
         <div class="card-panel" @click="dialogTableInvitationCode = true">
           <div class="card-panel-icon-wrapper icon-star">
-            <svg-icon icon-class="star" class-name="card-panel-icon" />
+            <svg-icon icon-class="star" class-name="card-panel-icon"/>
           </div>
           <div class="card-panel-description">
             <div class="card-panel-text">邀请码</div>
-            <span style="font-size: large">{{invitationCode}}</span>
+            <span style="font-size: large">{{ invitationCode }}</span>
           </div>
         </div>
       </el-col>
@@ -65,15 +65,15 @@
 
     <!--   *********************************点击已邀人数弹框 **********************************   -->
     <el-dialog title="" :visible.sync="dialogTableNum" width="100%">
-      <h2>已邀人数：<span>{{this.sonNum}}人</span></h2>
+      <h2>已邀人数：<span>{{ this.sonNum }}人</span></h2>
     </el-dialog>
 
 
     <!--   *********************************点击已邀用户弹框 **********************************   -->
     <el-dialog title="用户列表" :visible.sync="dialogTableVisible">
       <el-table :data="sonList">
-        <el-table-column property="nickName" label="昵称" ></el-table-column>
-        <el-table-column property="createTime" label="创建日期" ></el-table-column>
+        <el-table-column property="nickName" label="昵称"></el-table-column>
+        <el-table-column property="createTime" label="创建日期"></el-table-column>
         <el-table-column property="userRole" label="身份"></el-table-column>
       </el-table>
     </el-dialog>
@@ -86,10 +86,10 @@
 
     <!--   *********************************点击邀请弹框 **********************************   -->
     <el-dialog title="邀请" :visible.sync="dialogTableInvitationCode" width="100%" height="80%">
-      <div class="fx" >
-        <el-button type="success" round size="mini" @click="wxShare1()">立即分享</el-button>
-        <vue-qr class="qrcode" :text=downloadData.url :size="200" ></vue-qr>
-        <h2>邀请码：{{invitationCode}}</h2>
+      <div class="fx">
+        <el-button type="success" round size="mini" @click="$router.push('/invite')">立即分享</el-button>
+        <vue-qr class="qrcode" :text=downloadData.url :size="200"></vue-qr>
+        <h2>邀请码：{{ invitationCode }}</h2>
       </div>
     </el-dialog>
 
@@ -100,18 +100,18 @@
 <script>
 import { mapGetters } from 'vuex'
 import { queryUserListById } from '@/api/user'
-import { getSignature,test } from '@/api/get_signature'
+import { getSignature } from '@/api/get_signature'
 import vueQr from 'vue-qr'
-import  wx from 'weixin-js-sdk'
+import wx from 'weixin-js-sdk'
 
 export default {
   name: 'Distribution',
-  // invitationCode: $store.state.user.invitationCode,
-  data(){
-    return{
+  data() {
+    return {
       downloadData: {
-        url: `http://192.168.0.149:8080/#/invite?code=${this.$store.state.user.invitationCode}&income=${this.$store.state.user.income}`,
-        icon: '随便一张图片的地址也行'
+        //分享链接
+        url: `http://wx.anshapro.com/#/invite?code=${this.$store.state.user.invitationCode}&income=${this.$store.state.user.income}`
+        // icon: '随便一张图片的地址也行'
       },
       qrcode: '',
       income: '',
@@ -123,7 +123,12 @@ export default {
       dialogTableIncome: false, //佣金是否弹框
       dialogTableInvitationCode: false, //邀请码是否弹框
       // dialogFormVisible: false,
-      invitationCode: ''  //邀请码
+      invitationCode: '' , //邀请码
+      appId: '',
+      timestamp: '',
+      nonceStr: '',
+      signature: ''
+
     }
   },
   components: {
@@ -132,50 +137,70 @@ export default {
   computed: {
     ...mapGetters([
       'name'
-    ]),
+    ])
   },
   created() {
+    var vm = this
     //普通用户隐藏邀请码
-
     this.hide()
     this.fetchData()
     // console.log(this.invitationCode)
     // console.log(this.income)
     getSignature().then(res => {
-      // console.log(res)
-      // console.log(res.data.appId)
-      try {
-        wx.config({
-          debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-          appId: res.data.appId, // 必填，公众号的唯一标识
-          timestamp: res.data.timestamp, // 必填，生成签名的时间戳
-          nonceStr: res.data.nonceStr, // 必填，生成签名的随机串
-          signature:res.data.signature,// 必填，签名
-          jsApiList: [
-            "updateAppMessageShareData",
-            "updateTimelineShareData",
-            "checkJsApi",
-            "onMenuShareAppMessage",
-            "onMenuShareTimeline",
-
-          ] // 必填，需要使用的JS接口列表
-        });
-        wx.ready(function() {
-          try {
-            console.log("123")
-          } catch(e) {
-            //alert('wxready:'+e);
-          }
-        });
-      } catch (e){
-        console.log(e)
-      }
+      this.appId = res.data.appId
+      console.log(res)
+      this.timestamp = res.data.timestamp
+      this.nonceStr = res.data.nonceStr
+      this.signature = res.data.signature
     })
+    wx.config({
+      debug: true, // 开启调试模式
+      appId: this.appId, // 必填，公众号的唯一标识
+      timestamp: this.timestamp, // 必填，生成签名的时间戳
+      nonceStr: this.nonceStr, // 必填，生成签名的随机串
+      signature: this.signature, // 必填，签名，见附录1
+      jsApiList: [
+        'checkJsApi',
+        'updateTimelineShareData',
+        'updateAppMessageShareData'
+      ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+    })
+  },
+  mounted() {
 
+    wx.ready(function(){
+      wx.updateTimelineShareData({
+          title: '世界那么大，我想去看看-微信test', // 分享标题
+          desc: '世界那么大，我想去看看-微信test', // 分享描述
+          link: `http://wx.anshapro.com/#/invite`, // 分享链接
+          imgUrl: "", // 分享图标
+          success() {
+            // 用户成功分享后执行的回调函数
+            alert("成功")
+          },
+          cancel() {
+            // 用户取消分享后执行的回调函数
+            alert("失败")
+          }
+        }
+      );
+      wx.updateAppMessageShareData({
+        title: '世界那么大，我想去看看-微信test', // 分享标题
+        desc: '世界那么大，我想去看看-微信test', // 分享描述
+        link: this.downloadData.url, // 分享链接
+        // imgUrl: option.imgUrl, // 分享图标
+        success() {
+          // 用户成功分享后执行的回调函数
+        },
+        cancel() {
+          // 用户取消分享后执行的回调函数
+        }
+      })
+    })
   },
   methods: {
     fetchData() {
-      queryUserListById("son", this.$store.state.user.userId).then(res => {
+      queryUserListById('son', this.$store.state.user.userId).then(res => {
         // console.log(res)
         this.sonNum = res.data.length
         this.sonList = res.data
@@ -184,49 +209,44 @@ export default {
 
     //普通用户隐藏邀请码
     hide() {
-      if(this.$store.state.user.roleId === 0) {
+      if (this.$store.state.user.roleId === 0) {
         // console.log(this.$store.state.user.roleId)
         this.invitationCode = '******'
-      }
-      else{
+      } else {
         this.invitationCode = this.$store.state.user.invitationCode
       }
     },
-    get(){
-      test().then(res=>console.log(res))
-    },
-    //微信分享
+    // 微信分享
     wxShare() {
       wx.updateTimelineShareData({
         title: '世界那么大，我想去看看-微信test', // 分享标题
         desc: '世界那么大，我想去看看-微信test', // 分享描述
-        link: "tg.szhccs.cn",
-        // imgUrl: 'http://www.baidu.com/FpEhdOqBzM8EzgFz3ULByxatSacH', // 分享图标
+        link: `http://wx.anshapro.com/#/invite?code=${this.$store.state.user.invitationCode}&income=${this.$store.state.user.income}`,
+        imgUrl: '', // 分享图标
         success: (res) => {
           console.log(res)
         },
         fail: (err) => console.log(err)
       })
     },
-    wxShare1(){
-      wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
+    wxShare1() {
+      console.log('分享')
+      wx.ready(function() {   //需在用户可能点击分享按钮前就先调用
         wx.updateAppMessageShareData({
           title: '世界那么大，我想去看看-微信test', // 分享标题
           desc: '世界那么大，我想去看看-微信test', // 分享描述
-          link: 'tg.szhccs.cn', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+          link: `http://wx.anshapro.com/#/invite?code=${this.$store.state.user.invitationCode}&income=${this.$store.state.user.income}`, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
           // imgUrl: 'http://www.baidu.com/FpEhdOqBzM8EzgFz3ULByxatSacH', // 分享图标
-          success: function () {
-            console.log("111")
+          success: function() {
+            console.log('111')
             // 设置成功
           }
         })
-      });
+      })
     },
+    //跳转已邀用户列表
     getUserList() {
       this.$router.push('/userList')
-    },
-    jumpQRCode() {
-      this.$router.push('/QRCode')
     },
   }
 }
@@ -237,15 +257,19 @@ export default {
   display: flex;
   flex-direction: column;
 }
+
 .fx h2 {
   text-align: center;
 }
+
 .qrcode {
   margin: 0 auto;
 }
+
 #row {
 
 }
+
 .colTitle {
   font-weight: 700;
   text-align: center;
@@ -342,7 +366,7 @@ export default {
   }
 }
 
-@media (max-width:550px) {
+@media (max-width: 550px) {
   .card-panel-description {
     display: none;
   }

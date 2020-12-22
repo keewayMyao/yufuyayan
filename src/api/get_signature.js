@@ -8,10 +8,3 @@ export function getSignature() {
   })
 }
 
-
-export function test(){
-  return request({
-    url: '/test001',
-    method:'get',
-  })
-}
