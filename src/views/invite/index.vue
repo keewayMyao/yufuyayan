@@ -1,15 +1,15 @@
 <template>
   <div id="invite-bg" >
     <div class="block">
-      <img style="width: 100%" src="@/assets/logo/logo.jpg" alt="">
+      <img style="width: 100%" src="@/assets/logo/logo1.jpg" alt="">
       <div class="required">
         <el-button
           type="primary"
           round
           style="width: 100%;
-          background-color: #59d4c2;
-          border-color: #59d4c2;
-          color: #666;
+          background-color: #006370;
+          border-color: #006370;
+          /*color: #666;*/
           margin-bottom: 5%"  @click="jumpRegister">注册</el-button>
       </div>
       <div class="box bpx1">
@@ -100,11 +100,11 @@ export default {
     position: relative;
     width: 100vw;
     height: 100vh;
-    /*background-color: #3b9ea7;*/
+    /*background-color: #999;*/
   }
   #invite-bg img {
     margin: 10% 0;
-    border-radius: 50%;
+    /*border-radius: 50%;*/
     width: 100%;
     /*height: 100%;*/
   }
@@ -118,7 +118,7 @@ export default {
     position: relative;
     width: 90%;
     height: 5vh;
-    /*background-color: #fdfbfb;*/
+    /*background-color: #7f2424;*/
     line-height: 0px;
     margin: 0 auto  ;
     border: 1px solid #333;
@@ -126,7 +126,7 @@ export default {
     overflow: hidden;
   }
   .bpx1 {
-    /*margin-top: 2vh;*/
+    margin-top: 2vh;
     border-radius: 18px 18px 0 0;
     border-bottom: none;
   }

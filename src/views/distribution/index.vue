@@ -87,12 +87,23 @@
     <!--   *********************************点击邀请弹框 **********************************   -->
     <el-dialog title="邀请" :visible.sync="dialogTableInvitationCode" width="100%" height="80%">
       <div class="fx">
-        <el-button type="success" round size="mini" @click="$router.push('/invite')">立即分享</el-button>
+        <el-button ref="copy" class="tag-read" :data-clipboard-text="downloadData.url" type="success" round size="mini" @click="copy">立即分享</el-button>
         <vue-qr class="qrcode" :text=downloadData.url :size="200"></vue-qr>
         <h2>邀请码：{{ invitationCode }}</h2>
       </div>
     </el-dialog>
-
+    <!--   *********************************分享成功 **********************************   -->
+    <el-dialog title="复制" :visible.sync="dialogCopy" width="100%" height="80%">
+      <div >
+        <h2>分享链接复制成功</h2>
+      </div>
+    </el-dialog>
+    <!--   *********************************分享成功 **********************************   -->
+    <el-dialog title="复制" :visible.sync="dialogCopyFail" width="100%" height="80%">
+      <div >
+        <h2>分享链接复制失败，请稍后再试。</h2>
+      </div>
+    </el-dialog>
 
   </div>
 </template>
@@ -100,9 +111,8 @@
 <script>
 import { mapGetters } from 'vuex'
 import { queryUserListById } from '@/api/user'
-import { getSignature } from '@/api/get_signature'
 import vueQr from 'vue-qr'
-import wx from 'weixin-js-sdk'
+import Clipboard from 'clipboard';
 
 export default {
   name: 'Distribution',
@@ -122,6 +132,8 @@ export default {
       dialogTableVisible: false, //已邀用户列表是否弹框
       dialogTableIncome: false, //佣金是否弹框
       dialogTableInvitationCode: false, //邀请码是否弹框
+      dialogCopy: false, //复制成功
+      dialogCopyFail: false, //复制失败
       // dialogFormVisible: false,
       invitationCode: '' , //邀请码
       appId: '',
@@ -140,63 +152,12 @@ export default {
     ])
   },
   created() {
-    var vm = this
     //普通用户隐藏邀请码
     this.hide()
     this.fetchData()
-    // console.log(this.invitationCode)
-    // console.log(this.income)
-    getSignature().then(res => {
-      this.appId = res.data.appId
-      console.log(res)
-      this.timestamp = res.data.timestamp
-      this.nonceStr = res.data.nonceStr
-      this.signature = res.data.signature
-    })
-    wx.config({
-      debug: true, // 开启调试模式
-      appId: this.appId, // 必填，公众号的唯一标识
-      timestamp: this.timestamp, // 必填，生成签名的时间戳
-      nonceStr: this.nonceStr, // 必填，生成签名的随机串
-      signature: this.signature, // 必填，签名，见附录1
-      jsApiList: [
-        'checkJsApi',
-        'updateTimelineShareData',
-        'updateAppMessageShareData'
-      ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-    })
   },
   mounted() {
 
-    wx.ready(function(){
-      wx.updateTimelineShareData({
-          title: '世界那么大，我想去看看-微信test', // 分享标题
-          desc: '世界那么大，我想去看看-微信test', // 分享描述
-          link: `http://wx.anshapro.com/#/invite`, // 分享链接
-          imgUrl: "", // 分享图标
-          success() {
-            // 用户成功分享后执行的回调函数
-            alert("成功")
-          },
-          cancel() {
-            // 用户取消分享后执行的回调函数
-            alert("失败")
-          }
-        }
-      );
-      wx.updateAppMessageShareData({
-        title: '世界那么大，我想去看看-微信test', // 分享标题
-        desc: '世界那么大，我想去看看-微信test', // 分享描述
-        link: this.downloadData.url, // 分享链接
-        // imgUrl: option.imgUrl, // 分享图标
-        success() {
-          // 用户成功分享后执行的回调函数
-        },
-        cancel() {
-          // 用户取消分享后执行的回调函数
-        }
-      })
-    })
   },
   methods: {
     fetchData() {
@@ -206,7 +167,23 @@ export default {
         this.sonList = res.data
       })
     },
-
+    copy() {
+      var clipboard = new Clipboard('.tag-read')
+      clipboard.on('success', e => {
+        // alert("复制成功")
+        this.dialogCopy = true
+        // console.log('复制成功')
+        // 释放内存
+        clipboard.destroy()
+      })
+      clipboard.on('error', e => {
+        // 不支持复制
+        console.log('该浏览器不支持自动复制')
+        // alert("该浏览器不支持自动复制")
+        // 释放内存
+        clipboard.destroy()
+      })
+    },
     //普通用户隐藏邀请码
     hide() {
       if (this.$store.state.user.roleId === 0) {
@@ -217,32 +194,8 @@ export default {
       }
     },
     // 微信分享
-    wxShare() {
-      wx.updateTimelineShareData({
-        title: '世界那么大，我想去看看-微信test', // 分享标题
-        desc: '世界那么大，我想去看看-微信test', // 分享描述
-        link: `http://wx.anshapro.com/#/invite?code=${this.$store.state.user.invitationCode}&income=${this.$store.state.user.income}`,
-        imgUrl: '', // 分享图标
-        success: (res) => {
-          console.log(res)
-        },
-        fail: (err) => console.log(err)
-      })
-    },
-    wxShare1() {
-      console.log('分享')
-      wx.ready(function() {   //需在用户可能点击分享按钮前就先调用
-        wx.updateAppMessageShareData({
-          title: '世界那么大，我想去看看-微信test', // 分享标题
-          desc: '世界那么大，我想去看看-微信test', // 分享描述
-          link: `http://wx.anshapro.com/#/invite?code=${this.$store.state.user.invitationCode}&income=${this.$store.state.user.income}`, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-          // imgUrl: 'http://www.baidu.com/FpEhdOqBzM8EzgFz3ULByxatSacH', // 分享图标
-          success: function() {
-            console.log('111')
-            // 设置成功
-          }
-        })
-      })
+    Share() {
+      this.$router.push('/invite')
     },
     //跳转已邀用户列表
     getUserList() {
