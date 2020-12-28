@@ -93,6 +93,7 @@
 <!--    <img src="@/assets/img-home/h-12.png" alt="">-->
 <!--    <img src="@/assets/img-home/h-13.png" alt="">-->
 <!--    <img src="@/assets/img-home/h-14.png" alt="">-->
+    <div class="goTop" v-show="goTop" @click="toTop">Top</div>
   </div>
 </template>
 
@@ -111,6 +112,7 @@ export default {
       dialogCp5: false,
       dialogCp6: false,
       dialogCp7: false,
+      goTop: false
     }
   },
   computed: {
@@ -120,9 +122,26 @@ export default {
   },
   created() {
   },
+  mounted() {
+    // 此处true需要加上，不加滚动事件可能绑定不成功
+    window.addEventListener("scroll", this.handleScroll, true);
+  },
   methods: {
-
+    handleScroll() {
+      let scrolltop = document.documentElement.scrollTop || document.body.scrollTop;
+      scrolltop > 30 ? (this.goTop = true) : (this.goTop = false);
     },
+    toTop() {
+      let top = document.documentElement.scrollTop || document.body.scrollTop;
+      // 实现滚动效果
+      const timeTop = setInterval(() => {
+        document.body.scrollTop = document.documentElement.scrollTop = top -= 50;
+        if (top <= 0) {
+          clearInterval(timeTop);
+        }
+      }, 10);
+    }
+  }
 }
 </script>
 
@@ -159,10 +178,20 @@ img {
   z-index: 999;
 }
 .cpName div {
-  //font-weight: 700;
   margin: 1vw 0;
   font-size: 3vw;
   color:#000;
+}
+.goTop {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  z-index: 9999;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 50%;
+  background-color: #006370;
+  color: #fff;
 }
 
 
