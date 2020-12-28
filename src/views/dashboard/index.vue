@@ -93,7 +93,6 @@
 <!--    <img src="@/assets/img-home/h-12.png" alt="">-->
 <!--    <img src="@/assets/img-home/h-13.png" alt="">-->
 <!--    <img src="@/assets/img-home/h-14.png" alt="">-->
-    <div class="goTop" v-show="goTop" @click="toTop">Top</div>
   </div>
 </template>
 
@@ -112,7 +111,6 @@ export default {
       dialogCp5: false,
       dialogCp6: false,
       dialogCp7: false,
-      goTop: false
     }
   },
   computed: {
@@ -123,24 +121,9 @@ export default {
   created() {
   },
   mounted() {
-    // 此处true需要加上，不加滚动事件可能绑定不成功
-    window.addEventListener("scroll", this.handleScroll, true);
   },
   methods: {
-    handleScroll() {
-      let scrolltop = document.documentElement.scrollTop || document.body.scrollTop;
-      scrolltop > 30 ? (this.goTop = true) : (this.goTop = false);
-    },
-    toTop() {
-      let top = document.documentElement.scrollTop || document.body.scrollTop;
-      // 实现滚动效果
-      const timeTop = setInterval(() => {
-        document.body.scrollTop = document.documentElement.scrollTop = top -= 50;
-        if (top <= 0) {
-          clearInterval(timeTop);
-        }
-      }, 10);
-    }
+
   }
 }
 </script>
