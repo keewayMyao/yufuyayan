@@ -93,6 +93,7 @@
 <!--    <img src="@/assets/img-home/h-12.png" alt="">-->
 <!--    <img src="@/assets/img-home/h-13.png" alt="">-->
 <!--    <img src="@/assets/img-home/h-14.png" alt="">-->
+    <div class="btnTop"  v-if="btnFlag"  @click="backTop()">返回顶部</div>
   </div>
 </template>
 
@@ -111,6 +112,7 @@ export default {
       dialogCp5: false,
       dialogCp6: false,
       dialogCp7: false,
+      btnFlag:false
     }
   },
   computed: {
@@ -121,9 +123,35 @@ export default {
   created() {
   },
   mounted() {
+    window.addEventListener('scroll', this.scrollToTop)
+  },
+  destroyed() {
+    window.removeEventListener('scroll', this.scrollToTop)
   },
   methods: {
+    // 点击图片回到顶部方法，加计时器是为了过渡顺滑
+    backTop() {
+      let that = this
+      let timer = setInterval(() => {
+        let ispeed = Math.floor(-that.scrollTop / 5)
+        document.documentElement.scrollTop = document.body.scrollTop = that.scrollTop + ispeed
+        if(that.scrollTop === 0) {
+          clearInterval(timer)
+        }
+      }, 16)
+    },
 
+    // 为了计算距离顶部的高度，当高度大于200显示回顶部图标，小于200则隐藏
+    scrollToTop() {
+      let that = this
+      let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+      that.scrollTop = scrollTop
+      if(that.scrollTop >200) {
+        that.btnFlag = true
+      } else {
+        that.btnFlag = false
+      }
+    }
   }
 }
 </script>
@@ -176,6 +204,16 @@ img {
   background-color: #006370;
   color: #fff;
 }
-
+.btnTop {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  width: 2vw;
+  z-index: 9999;
+  background-color: #006370;
+  color: #ffffff;
+  text-align: center;
+  cursor:pointer;
+}
 
 </style>
