@@ -1,5 +1,5 @@
 <template>
-  <!--  ****************************分销中心********************************-->
+  <!--  ****************************管理中心********************************-->
   <div>
     <el-row :gutter="40" class="panel-group" id="row">
 
@@ -13,7 +13,7 @@
           </div>
           <div class="card-panel-description">
             <div class="card-panel-text">已邀人数</div>
-            <span style="font-size: large">{{ sonNum }}</span>
+            <span style="font-size: large">{{ sonNum + grandsonNum}}</span>
           </div>
         </div>
       </el-col>
@@ -65,7 +65,7 @@
 
     <!--   *********************************点击已邀人数弹框 **********************************   -->
     <el-dialog title="" :visible.sync="dialogTableNum" width="100%">
-      <h2>已邀人数：<span>{{ this.sonNum }}人</span></h2>
+      <h2>已邀人数：<span>{{ this.sonNum + this.grandsonNum}}人</span></h2>
     </el-dialog>
 
 
@@ -125,8 +125,9 @@ export default {
       },
       qrcode: '',
       income: '',
-      sonNum: '',
-      sonList: null,
+      sonNum: '', //直推人数
+      grandsonNum: '', //间推人数
+      sonList: null, //直推人数列表
       visible: false,
       dialogTableNum: false, //已邀人数是否弹框
       dialogTableVisible: false, //已邀用户列表是否弹框
@@ -160,11 +161,19 @@ export default {
 
   },
   methods: {
+    //
     fetchData() {
+      //获取用户的直推人数跟列表   传入son 是直推， 传入 grandson 是间推
       queryUserListById('son', this.$store.state.user.userId).then(res => {
         // console.log(res)
         this.sonNum = res.data.length
         this.sonList = res.data
+      })
+      //获取用户的间推人数跟列表
+      queryUserListById('grandson', this.$store.state.user.userId).then(res => {
+        // console.log(res)
+        this.grandsonNum = res.data.length
+        // this.sonList = res.data
       })
     },
     copy() {

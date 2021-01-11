@@ -30,11 +30,11 @@
 
     <div class="pageNum">
     <el-button-group >
-      <el-button  icon="el-icon-arrow-left" @click="previousPage()">上一页</el-button>
+      <el-button  icon="el-icon-arrow-left" @click="previousPage()" :disabled="isDisable">上一页</el-button>
     </el-button-group>
     <h3 class="pageH3">第 {{page+1}} 页</h3>
     <el-button-group>
-      <el-button  @click="nextPage()">下一页<i class="el-icon-arrow-right el-icon--right"></i></el-button>
+      <el-button  @click="nextPage()" :disabled="isDisable1">下一页<i class="el-icon-arrow-right el-icon--right"></i></el-button>
     </el-button-group>
     </div>
 
@@ -52,7 +52,9 @@ export default {
       list: [],
       listLoading: false,
       page: 0 ,
-      pageSize: 10
+      pageSize: 10,
+      isDisable: false,
+      isDisable1: false
     }
   },
   created() {
@@ -73,6 +75,7 @@ export default {
     },
     //上一页
     previousPage(){
+      this.isDisable = true
       if (this.page === 0){
         //禁用按钮
         this.disabled = true
@@ -80,16 +83,24 @@ export default {
         this.page--
         this.fetchData()
       }
+      setTimeout(() => {
+        this.isDisable = false
+      }, 1000)
+
     },
     //下一页
     nextPage(){
       // console.log(this.list)
+      this.isDisable1 = true
       if(this.list.length !== 10){
         this.disabled = true
       }else {
         this.page++
         this.fetchData()
       }
+      setTimeout(() => {
+        this.isDisable1 = false
+      }, 1000)
     },
   }
 }

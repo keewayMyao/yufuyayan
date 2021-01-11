@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <h3 style="text-align: center">已邀请的用户列表</h3>
-    <el-button type="primary" style="margin-bottom: 5px" @click="$router.push('/distribution/index')">返回首页</el-button>
+    <el-button type="primary" style="margin-bottom: 5px" @click="$router.push('/distribution/index')">返回</el-button>
     <el-table
       :data="sonList"
       border

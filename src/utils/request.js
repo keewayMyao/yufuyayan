@@ -8,6 +8,7 @@ import { getToken } from '@/utils/auth'
 const service = axios.create({
   //
   baseURL: "http://wx.anshapro.com:2324", // url = base url + request url
+  // baseURL: "http://192.168.0.129:2324",
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 10000 // request timeout
 })
