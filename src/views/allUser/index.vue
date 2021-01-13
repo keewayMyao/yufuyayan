@@ -33,13 +33,13 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="总佣金" align="center">
+      <el-table-column label="总玉币" align="center">
         <template slot-scope="scope">
           {{ scope.row.income }}
         </template>
       </el-table-column>
 
-      <el-table-column label="上次结算总佣金" align="center">
+      <el-table-column label="上次结算总玉币" align="center">
         <template slot-scope="scope">
           {{ scope.row.lastIncome }}
         </template>
@@ -51,26 +51,50 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="本次可结算佣金" align="center">
+      <el-table-column label="本次可结算玉币" align="center">
         <template slot-scope="scope">
           {{ scope.row.income - scope.row.lastIncome }}
         </template>
       </el-table-column>
 
-      <el-table-column label="佣金" align="center">
+      <el-table-column label="玉币" align="center"  width="170">
         <template slot-scope="scope">
-          <el-button type="primary" @click="settle(scope.$index)">结算</el-button>
+          <el-button  type="primary" size="mini" @click="settle(scope.$index)">结算</el-button>
+          <el-button  type="danger" size="mini" @click="resetUserPas(scope.$index)">重置密码</el-button>
+
         </template>
       </el-table-column>
 
     </el-table>
 <!--***************************************结算弹框**********************************************-->
     <el-dialog title="结算" :visible.sync="dialogTableSettle" width="70%" >
-      <span>是否确定结算本次佣金</span>
+      <span>是否确定结算本次玉币</span>
       <span slot="footer" class="dialog-footer">
           <el-button @click="dialogTableSettle = false">取 消</el-button>
           <el-button type="primary" @click="determine(isIndex)">确 定</el-button>
         </span>
+    </el-dialog>
+    <!--***************************************重置密码**********************************************-->
+    <el-dialog title="重置密码" :visible.sync="dialogResetUserPas" width="70%" >
+      <span>确定重置密码吗</span>
+      <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogResetUserPas = false">取 消</el-button>
+          <el-button type="primary" @click="resetUserPas1(isIndex)">确 定</el-button>
+        </span>
+    </el-dialog>
+    <!--***************************************新密码**********************************************-->
+    <el-dialog title="新密码" :visible.sync="dialogPassWord" width="70%" >
+      <span>新密码为：{{newPas}}</span>
+      <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogPassWord = false">取 消</el-button>
+          <el-button type="primary" @click="dialogPassWord = false">确 定</el-button>
+        </span>
+    </el-dialog>
+    <!--   *********************************分享成功 **********************************   -->
+    <el-dialog title="复制" :visible.sync="dialogCopy" width="100%" height="80%">
+      <div >
+        <h2>分享链接复制成功</h2>
+      </div>
     </el-dialog>
 
 <!--*****************************分页***********************************-->
@@ -87,8 +111,9 @@
 </template>
 
 <script>
-import { getUser } from '@/api/user'
+import { getUser ,resetPas } from '@/api/user'
 import { settlement } from '@/api/settlement'
+import Clipboard from 'clipboard'
 
 export default {
   filters: {},
@@ -97,15 +122,18 @@ export default {
       isIndex: '',
       list: [],
       listLoading: false,
-      dialogTableSettle: false,
+      dialogTableSettle: false, //结算
+      dialogResetUserPas: false,  //重置密码
+      dialogPassWord: false,  //新密码
+      dialogCopy:false, //复制密码
       total: 1000,
       pageSize: 10,
-      currentPage: 1
+      currentPage: 1,
+      newPas:'',
     }
   },
   created() {
     this.fetchData()
-
   },
   methods: {
     //获取全部用户信息
@@ -140,10 +168,46 @@ export default {
       })
 
     },
-    //
+    //分页
     current_change(currentPage) {
       this.currentPage = currentPage;
-    }
+    },
+    //重置密码弹框
+    resetUserPas(index){
+      // console.log(index)
+      this.dialogResetUserPas = true
+      this.isIndex = index + (this.currentPage-1) * this.pageSize
+      // console.log(this.isIndex)
+    },
+    //确定重置密码
+    resetUserPas1(index) {
+      resetPas(this.list[index].userId).then(res => {
+        this.newPas = res.data
+        // console.log(this.list[index].userId)
+        // console.log(index)
+        // console.log(res)
+        this.dialogResetUserPas = false
+        this.dialogPassWord = true
+      })
+    },
+    //复制新密码
+    copy() {
+      var clipboard = new Clipboard('.tag-read')
+      clipboard.on('success', e => {
+        // alert("复制成功")
+        this.dialogCopy = true
+        // console.log('复制成功')
+        // 释放内存
+        clipboard.destroy()
+      })
+      clipboard.on('error', e => {
+        // 不支持复制
+        console.log('该浏览器不支持自动复制')
+        // alert("该浏览器不支持自动复制")
+        // 释放内存
+        clipboard.destroy()
+      })
+    },
   }
 }
 

@@ -34,6 +34,14 @@ export function queryUserListById(accountType,id) {
   })
 }
 
+export function resetPas(userId) {
+  return request({
+    url: '/resetPas',
+    method: 'get',
+    params: { userId }
+  })
+}
+
 
 
 

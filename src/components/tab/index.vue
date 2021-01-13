@@ -25,7 +25,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="佣金" align="center">
+      <el-table-column label="玉币" align="center">
         <template slot-scope="scope">
           {{ scope.row.commission }}
         </template>

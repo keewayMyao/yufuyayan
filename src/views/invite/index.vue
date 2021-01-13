@@ -84,7 +84,7 @@ export default {
       '姚', '邵', '湛', '汪', '祁', '毛', '禹', '狄', '米', '贝', '明', '臧', '计', '伏', '成', '戴', '谈', '宋', '茅', '庞',
       '熊', '纪', '舒', '屈', '项', '祝', '董', '梁', '杜', '阮', '蓝', '闵', '席', '季', '麻', '强', '贾', '路', '娄', '危' ];
       var arr1 = [500, 5000, 7500, 8000, 8500, 12000, 19800]
-     return  arr[Math.floor((Math.random()*arr.length))]+'**获得佣金'+arr1[Math.floor((Math.random()*arr1.length))];
+     return  arr[Math.floor((Math.random()*arr.length))]+'**获得玉币'+arr1[Math.floor((Math.random()*arr1.length))];
     }
 
   },
