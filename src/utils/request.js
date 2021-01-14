@@ -7,8 +7,8 @@ import { getToken } from '@/utils/auth'
 // 创建axios实例
 const service = axios.create({
   //
-  // baseURL: "http://wx.anshapro.com:2324", // url = base url + request url
-  baseURL: "http://192.168.0.129:2324",
+  baseURL: "http://wx.anshapro.com:2324", // url = base url + request url //上线服务
+  // baseURL: "http://192.168.0.129:2324", //本地服务
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 10000 // request timeout
 })

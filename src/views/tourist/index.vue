@@ -163,14 +163,17 @@
         },
         ).then(() => {
           getAssignedRole(this.list[index].userId, this.form.region).then((res) => {
-              // console.log('发送请求成功')
+              // console.log(res)
               this.$message({
                 type: 'success',
                 message: '修改成功!'
             })
             //刷新页面
             location.reload();
-          });
+          }).catch(err => {
+            // console.log(err)
+            }
+          );
           this.dialogVisible =  false;
         }).catch(() => {
           this.$message({

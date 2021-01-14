@@ -77,6 +77,7 @@ import { queryUserListById } from '@/api/user'
 
 
   export default {
+    name: 'UserList',
     filters: {},
     data() {
       return {
@@ -107,19 +108,6 @@ import { queryUserListById } from '@/api/user'
         queryUserListById("son", this.$store.state.user.userId).then(res => {
           // console.log(res)
           this.sonList = res.data
-          // for (let i = 0; i < this.arr.length; i++){
-          //   if (this.arr[i].hasChildren === true){
-          //     queryUserListById("son",this.arr[i].userId ).then(res => {
-          //       this.grandson = res.data
-          //       // console.log(this.grandson,this.sonList[i].nickName)
-          //       this.arr[i].children = this.grandson
-          //       // console.log(typeof(grandson))
-          //       // console.log(this.sonList[i])
-          //     })
-          //   }
-          // }
-          // this.sonList = this.arr
-          // console.log(this.sonList)
         })
 
       },

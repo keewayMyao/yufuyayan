@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-button type="primary" style="background-color: #64d9d6;border: none;margin-bottom: 5px" @click="$router.push('/')">返回首页</el-button>
+    <el-button type="primary" style="background-color: #64d9d6;border: none;margin-bottom: 5px" @click="back()">返回首页</el-button>
     <div class="user">
       <img src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif" alt="" id="avatar">
       <div class="userInfo">
@@ -107,7 +107,11 @@ export default {
         // console.log(res)
         location.reload();
       })
-    }
+    },
+    //返回上一页
+    back() {
+      this.$router.go(-1);
+    },
   }
 }
 </script>

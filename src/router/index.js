@@ -20,7 +20,14 @@ export const constantRoutes = [
   },
   {
     path: '/userList',
+    name: 'UserList',
     component: () => import('@/views/userList/index'),
+    hidden: true
+  },
+  {
+    path: '/lookSonList',
+    name: 'LookSonList',
+    component: () => import('@/views/lookSonList/index'),
     hidden: true
   },
   {
