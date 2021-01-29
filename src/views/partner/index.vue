@@ -97,7 +97,7 @@ export default {
       getList(2).then(res => {
         this.list = res.data
         this.total = res.data.length;
-        this.list[1].hasChildren = true
+        // this.list[1].hasChildren = true
         this.listLoading = false
       }).catch(err => {
         console.log(err)
@@ -124,8 +124,9 @@ export default {
         // path: '/lookSonList',
         name: 'LookSonList',
         params: {
-          sonListId:row.userId,
-          userNickName: row.nickName,
+          my:row,
+          // sonListId:row.userId,
+          // userNickName: row.nickName,
         }
       })
     }
@@ -134,13 +135,15 @@ export default {
 </script>
 
 
+
+
 <!--<template>-->
 <!--  <div>-->
 <!--    <el-table-->
 <!--      :data="list.slice((currentPage-1)*pageSize,currentPage*pageSize)"-->
 <!--      v-loading="listLoading"-->
 <!--      style="width: 100%"-->
-<!--      row-key="keyId"-->
+<!--      row-key="id"-->
 <!--      border-->
 <!--      lazy-->
 <!--      :load="load"-->
@@ -212,24 +215,11 @@ export default {
 <!--    fetchData() {-->
 <!--      this.listLoading = true-->
 <!--      // 返回身份id为3的用户列表-->
-<!--      let arr1 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c']-->
-<!--      var idkey1 = arr1[Math.floor((Math.random()*arr1.length))]+-->
-<!--        arr1[Math.floor((Math.random()*arr1.length))]+-->
-<!--        arr1[Math.floor((Math.random()*arr1.length))]+-->
-<!--        arr1[Math.floor((Math.random()*arr1.length))]+-->
-<!--        arr1[Math.floor((Math.random()*arr1.length))]+-->
-<!--        arr1[Math.floor((Math.random()*arr1.length))]+-->
-<!--        arr1[Math.floor((Math.random()*arr1.length))]+-->
-<!--        arr1[Math.floor((Math.random()*arr1.length))]+-->
-<!--        arr1[Math.floor((Math.random()*arr1.length))]-->
 <!--      getList(2).then(res => {-->
-<!--        // console.log(res.data)-->
-<!--        for (let j = 0; j < res.data.length; j++){-->
-<!--          res.data[j].keyId = idkey1-->
+<!--        for (let i = 0; i < res.data.length; i++){-->
+<!--          res.data[i].id = res.data[i].userId-->
 <!--        }-->
 <!--        this.list = res.data-->
-
-<!--        // console.log(this.list)-->
 <!--        this.total = res.data.length;-->
 <!--        this.listLoading = false-->
 <!--      })-->
@@ -238,27 +228,11 @@ export default {
 <!--      this.currentPage = currentPage;-->
 <!--    },-->
 <!--    load(tree, treeNode, resolve) {-->
-<!--      // console.log(treeNode)-->
-<!--      var arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c']-->
-<!--      var idkey = arr[Math.floor((Math.random()*arr.length))]+-->
-<!--        arr[Math.floor((Math.random()*arr.length))]+-->
-<!--        arr[Math.floor((Math.random()*arr.length))]+-->
-<!--        arr[Math.floor((Math.random()*arr.length))]+-->
-<!--        arr[Math.floor((Math.random()*arr.length))]+-->
-<!--        arr[Math.floor((Math.random()*arr.length))]+-->
-<!--        arr[Math.floor((Math.random()*arr.length))]+-->
-<!--        arr[Math.floor((Math.random()*arr.length))]+-->
-<!--        arr[Math.floor((Math.random()*arr.length))]-->
-<!--      // for (let i = 0; i<res.data.length;i++){-->
-<!--      //   res.data[i].id = idkey-->
-<!--      // }-->
+<!--      console.log(tree,1)-->
 <!--      //获取用户的直推人数跟列表   传入son 是直推， 传入 grandson 是间推-->
 <!--      queryUserListById('son', tree.userId).then(res => {-->
-<!--        // console.log(res.data)-->
-<!--        for (let i = 0; i<res.data.length;i++){-->
-<!--          res.data[i].keyId = idkey-->
-<!--          console.log(res.data[i].keyId,i)-->
-<!--          console.log(this.list[2].keyId,this.list[2].nickName)-->
+<!--        for (let i = 0; i < res.data.length; i++) {-->
+<!--          res.data[i].id = tree.userId + i-->
 <!--        }-->
 <!--        this.children = res.data-->
 <!--      })-->

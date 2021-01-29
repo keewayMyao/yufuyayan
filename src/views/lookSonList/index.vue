@@ -1,9 +1,9 @@
 <template>
   <div class="app-container">
-    <h3 style="text-align: center">({{ userNickName }}) 邀请的用户列表</h3>
+    <h3 style="text-align: center">({{ my[0].nickName }}) 邀请的用户列表</h3>
     <el-button type="primary" style="margin-bottom: 5px" @click="back()">返回</el-button>
     <el-table
-      :data="sonList"
+      :data="my"
       v-loading="listLoading"
       style="width: 100%"
       row-key="userName"
@@ -57,6 +57,7 @@ export default {
   data() {
     return {
       sonList: [],
+      my: [],
       arr: [],
       grandson: [],
       listLoading: false,
@@ -66,21 +67,23 @@ export default {
   },
   created() {
     // console.log(this.$route.params.userId)
-    this.sonListId = this.$route.params.sonListId
-    this.userNickName = this.$route.params.userNickName
+    // this.sonListId = this.$route.params.sonListId
+    // this.userNickName = this.$route.params.userNickName
+    this.my[0] = this.$route.params.my
+    // console.log(this.my,'my')
     // console.log(this.sonListId)
   },
   mounted() {
-    this.fetchData()
+    // this.fetchData()
   },
   methods: {
     //获取身份
-    fetchData() {
-      queryUserListById("son", this.sonListId).then(res => {
-        // console.log(res)
-        this.sonList = res.data
-      })
-    },
+    // fetchData() {
+    //   queryUserListById("son", this.my.userId).then(res => {
+    //     // console.log(res)
+    //     this.sonList = res.data
+    //   })
+    // },
     //返回上一页
     back() {
       this.$router.go(-1);

@@ -95,9 +95,10 @@ import { getList } from '@/api/table'
         this.listLoading = true
        // 返回身份id为3的用户列表
         getList(3).then(res => {
+          // console.log(res)
           this.list = res.data
           this.total = res.data.length;
-          this.list[1].hasChildren = true
+          // this.list[1].hasChildren = true
           this.listLoading = false
         }).catch(err => {
           console.log(err)
@@ -124,8 +125,9 @@ import { getList } from '@/api/table'
           // path: '/lookSonList',
           name: 'LookSonList',
           params: {
-            sonListId:row.userId,
-            userNickName: row.nickName,
+            my:row,
+            // sonListId:row.userId,
+            // userNickName: row.nickName,
           }
         })
       }

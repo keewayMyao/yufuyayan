@@ -97,7 +97,7 @@ export default {
       getList(1).then(res => {
         this.list = res.data
         this.total = res.data.length;
-        this.list[1].hasChildren = true
+        // this.list[1].hasChildren = true
         this.listLoading = false
       }).catch(err => {
         console.log(err)
@@ -124,8 +124,9 @@ export default {
         // path: '/lookSonList',
         name: 'LookSonList',
         params: {
-          sonListId:row.userId,
-          userNickName: row.nickName,
+          my:row,
+          // sonListId:row.userId,
+          // userNickName: row.nickName,
         }
       })
     }

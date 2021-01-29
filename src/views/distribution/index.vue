@@ -65,7 +65,7 @@
 
     <!--   *********************************点击已邀人数弹框 **********************************   -->
     <el-dialog title="" :visible.sync="dialogTableNum" width="100%">
-      <h2>已邀人数：<span>{{ this.sonNum + this.grandsonNum}}人</span></h2>
+      <h2>已邀直推、间推总人数：<span>{{ this.sonNum + this.grandsonNum}} 人</span></h2>
     </el-dialog>
 
 

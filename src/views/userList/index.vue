@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <h3 style="text-align: center">直推用户列表</h3>
+    <h3 style="text-align: center">直推、间推用户列表</h3>
     <el-button type="primary" style="margin-bottom: 5px" @click="$router.push('/distribution/index')">返回</el-button>
 <!--    *****************直推用户*******************-->
 <!--    <el-table-->
@@ -35,7 +35,7 @@
 <!--    </el-table>-->
 
 <!--********************间推列表********************-->
-    <h3 style="text-align: center">间推用户列表</h3>
+<!--    <h3 style="text-align: center">间推用户列表</h3>-->
     <el-table
       :data="sonList"
       v-loading="listLoading"
